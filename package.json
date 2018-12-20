@@ -2,6 +2,19 @@
   "name": "the-game-library",
   "version": "0.1.0",
   "private": true,
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Titanium14/The-Game-Library.git"
+  },
+  "author": "Wai Jyuen Phang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Titanium14/The-Game-Library/issues"
+  },
+  "homepage": "https://github.com/Titanium14/The-Game-Library#readme",
   "dependencies": {
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -13,13 +26,4 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
 }
