@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
 
-import NavBar from '../NavBar/NavBar';
-import GameCard from '../GameCard/GameCard';
+import NavBar from '../Utils/NavBar';
+import GameCard from './GameCard';
+import Buttons from './Buttons';
 
 class Games extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      games: []
+      games: [],
+      link: ''
     }
   }
 
@@ -48,11 +50,26 @@ class Games extends Component {
     return (
       <Container fluid className="m-grid-container">
         <Row>
-          <Col md="12">
+          <Col md={12}>
             <NavBar />
           </Col>
         </Row>
-        <Row>
+        <Row className="m-spacing">
+          <Col md={4}></Col>
+          <Col md={4}>
+            <h5>Filter options:</h5>
+            <Buttons
+              color="primary"
+              name="Consoles"
+              console={["PS4", "XBox One", "PC", "Nintendo Switch"]} />
+            <Buttons
+              color="secondary"
+              name="Genres"
+              console={["Action", "Adventure", "Causal", "RPG", "Horror", "FPS", "Sports", "Racing"]} />
+          </Col>
+          <Col md={4}></Col>
+        </Row>
+        <Row className="m-spacing">
           {gameList}
         </Row>
       </Container>
