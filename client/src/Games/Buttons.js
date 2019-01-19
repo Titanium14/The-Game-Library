@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class Buttons extends Component {
   constructor(props) {
@@ -24,28 +25,24 @@ class Buttons extends Component {
   }
 
   render() {
+    let dropOption;
+    if (this.props.platforms !== undefined) {
+      dropOption = this.props.platforms;
+    } else if (this.props.genre !== undefined) {
+      dropOption = this.props.genre;
+    }
+    const dropList = dropOption.map( dOp =>
+      <DropdownItem key={dOp.id} onClick={() => this.onDropDownOptionClick(dOp)}>
+        {dOp.name}
+      </DropdownItem>
+    )
     return (
-      <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+      <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle caret color={this.props.color}>
           {this.props.name}
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem
-            onClick={() => this.onDropDownOptionClick(this.props.console[0])}>
-            {this.props.console[0]}
-          </DropdownItem>
-          <DropdownItem
-            onClick={() => this.onDropDownOptionClick(this.props.console[1])}>
-            {this.props.console[1]}
-          </DropdownItem>
-          <DropdownItem
-            onClick={() => this.onDropDownOptionClick(this.props.console[2])}>
-            {this.props.console[2]}
-          </DropdownItem>
-          <DropdownItem
-            onClick={() => this.onDropDownOptionClick(this.props.console[3])}>
-            {this.props.console[3]}
-          </DropdownItem>
+          {dropList}
         </DropdownMenu>
       </ButtonDropdown>
     );

@@ -1,4 +1,17 @@
-.test {
-  width: 50%;
-  height: 50%;
+.s-card-size {
+  height: 30rem;
+}
+
+.s-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.s-table-header-control th:not(:first-child) {
+  width: 200px;
+}
+
+.s-table-header-control th:first-child {
+  width: 115px;
 }
