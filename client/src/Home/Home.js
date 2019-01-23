@@ -21,7 +21,7 @@ const Home = (props) => {
       <Row>
         <Col md={1}></Col>
         <Col md={10}>
-          <Button href="/Games" color="primary" size="lg" block>Begin the search!</Button>
+          <Button href="/Games/1" color="primary" size="lg" block>Begin the search!</Button>
         </Col>
         <Col md={1}></Col>
       </Row>

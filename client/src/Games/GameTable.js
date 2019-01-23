@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import axios from 'axios';
 
 import GameRow from './GameRow';
+
+const corsLink = "https://cors-anywhere.herokuapp.com/";
+const apiLink = "https://api-v3.igdb.com/games?";
+let fields = "*,cover.url,platforms.name,release_dates.human,genres.name";
+let filters = "[platforms][eq]=(6,48,130,49)";
+let limit = 10;
+let offset = 0;
 
 class GameTable extends Component {
   constructor(props) {
@@ -12,8 +19,11 @@ class GameTable extends Component {
     this.state = {
       games: [],
       offset: 10,
-      link: `https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/games?fields=*,cover.url,platforms.name,release_dates.human,genres.name&filter[platforms][eq]=(6,48,130,49)&limit=10&offset=0`
+      link: `${corsLink}${apiLink}fields=${fields}&filter${filters}&limit=${limit}&offset=${offset}`,
+      nameFlag: false
     }
+
+    this.handleClickGame = this.handleClickGame.bind(this);
   }
 
   componentDidMount() {
@@ -32,16 +42,42 @@ class GameTable extends Component {
     });
   }
 
+  componentDidUpdate() {
+    console.log("hi");
+  }
+
+  handleClickGame() {
+    this.setState(prevState => ({
+      nameFlag: !prevState.nameFlag
+    }));
+  }
+
   render() {
+    console.log(this.state.nameFlag);
     let imgSrc, platforms, platformArray, genres, genreArray, release;
-    const gameList = this.state.games.map( g => {
+
+    const data = this.state.nameFlag === true ? [].concat(this.state.games)
+    .sort((a,b) => {
+      if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+      if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
+      return 0;
+    })
+      :
+    [].concat(this.state.games)
+      .sort((a,b) => {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        return 0;
+      })
+
+    const gameList = data.map( g => {
       genreArray = [];
       platformArray = [];
 
-      g.cover !== undefined ? imgSrc = g.cover.url : imgSrc = "https://placeholdit.imgix.net/~text?txtsize=8&txt=N/A&w=40&h=40";
-      g.platforms !== undefined ? platforms = g.platforms : platforms = "Not available";
-      g.genres !== undefined ? genres = g.genres : genres = "Not available";
-      g.release_dates !== undefined ? release = g.release_dates[0].human : release = "Not available";
+      g.cover ? imgSrc = g.cover.url : imgSrc = "https://placeholdit.imgix.net/~text?txtsize=8&txt=N/A&w=40&h=40";
+      g.platforms ? platforms = g.platforms : platforms = "Not available";
+      g.genres ? genres = g.genres : genres = "Not available";
+      g.release_dates ? release = g.release_dates[0].human : release = "Not available";
 
       if (genres !== "Not available" && (genres && genres.length >= 1)) {
         let i = 0;
@@ -75,7 +111,7 @@ class GameTable extends Component {
         <thead>
           <tr className="s-table-header-control">
             <th></th>
-            <th>Game</th>
+            <th><Button className="s-button" onClick={this.handleClickGame} color="link">Game</Button></th>
             <th>Platform</th>
             <th>Genres</th>
             <th>Release Date</th>

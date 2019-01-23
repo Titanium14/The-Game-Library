@@ -23,7 +23,7 @@ class NavBar extends Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mr-auto" navbar>
-              <NavLink href="/Games">Games</NavLink>
+              <NavLink href="/Games/1">Games</NavLink>
             </Nav>
           </Collapse>
         </Navbar>

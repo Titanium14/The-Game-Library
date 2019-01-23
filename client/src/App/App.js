@@ -12,7 +12,11 @@ class App extends Component {
       <Router>
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/Games' component={Games} />
+          <Route exact path='/Games/1' component={Games} />
+          <Route exact path='/Games/2' component={Games} />
+          <Route exact path='/Games/3' component={Games} />
+          <Route exact path='/Games/4' component={Games} />
+          <Route exact path='/Games/5' component={Games} />
           <Route exact path='/Games/SingleGame' component={SingleGame} />
           <Route render={() => <p>Not Found</p>} />
         </Switch>

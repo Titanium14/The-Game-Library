@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 
 import List from './List';
 
-const AppContext = React.createContext();
-
 class GameRow extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +14,7 @@ class GameRow extends Component {
   render() {
     let genrelist = [];
     if (this.props.genres !== "Not available") {
-      for (var i = 0; i < this.props.genres.length; i++) {
+      for (let i = 0; i < this.props.genres.length; i++) {
         genrelist.push(<List key={i} listOp={this.props.genres[i]} />);
       }
     } else {
@@ -25,7 +23,7 @@ class GameRow extends Component {
 
     let platformlist = [];
     if (this.props.platforms !== "Not available") {
-      for (var i = 0; i < this.props.platforms.length; i++) {
+      for (let i = 0; i < this.props.platforms.length; i++) {
         platformlist.push(<List key={i} listOp={this.props.platforms[i]} />);
       }
     } else {

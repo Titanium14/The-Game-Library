@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Container, Row, Col, ButtonGroup } from 'reactstrap';
+import { Container, Row, Col, ButtonGroup, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 import NavBar from '../Utils/NavBar';
 import Buttons from './Buttons';
 import GameTable from './GameTable';
+import PageControl from './PageControl';
 
 import '../styles/Games.css';
 
@@ -40,6 +41,25 @@ const Games = (props) => {
         <Col md={6}>
           <Row noGutters>
             <GameTable />
+          </Row>
+          <Row noGutters>
+            <Col md={4}></Col>
+            <Col md={4}>
+              <Pagination aria-label="Page navigation example">
+                <PaginationItem>
+                  <PaginationLink previous href="#" />
+                </PaginationItem>
+                <PageControl pages={1} />
+                <PageControl pages={2} />
+                <PageControl pages={3} />
+                <PageControl pages={4} />
+                <PageControl pages={5} />
+                <PaginationItem>
+                  <PaginationLink next href="#" />
+                </PaginationItem>
+              </Pagination>
+            </Col>
+            <Col md={4}></Col>
           </Row>
         </Col>
         <Col md={2}>
