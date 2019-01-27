@@ -29,6 +29,26 @@ const Games = (props) => {
     return newObj;
   });
 
+  const pageNum = parseInt(props.location.pathname.substr(7));
+  let prevPages = [];
+  let nextPages = [];
+  let i = pageNum;
+  let flag = false;
+
+  /**/
+  while (i <= (pageNum+4)) {
+    nextPages.push(<PageControl key={i} pages={i} />);
+    if (!flag) {
+      let ii = pageNum;
+      while (ii >= (pageNum-3) && ii > 1) {
+        ii--;
+        prevPages.unshift(<PageControl key={ii} pages={ii} />);
+      }
+      flag = true;
+    }
+    i++;
+  }
+
   return (
     <Container fluid className="m-grid-container">
       <Row>
@@ -40,7 +60,9 @@ const Games = (props) => {
         <Col md={2}></Col>
         <Col md={6}>
           <Row noGutters>
-            <GameTable />
+            <GameTable
+              pageNum={pageNum}
+              offset={pageNum-1} />
           </Row>
           <Row noGutters>
             <Col md={4}></Col>
@@ -49,11 +71,8 @@ const Games = (props) => {
                 <PaginationItem>
                   <PaginationLink previous href="#" />
                 </PaginationItem>
-                <PageControl pages={1} />
-                <PageControl pages={2} />
-                <PageControl pages={3} />
-                <PageControl pages={4} />
-                <PageControl pages={5} />
+                {prevPages}
+                {nextPages}
                 <PaginationItem>
                   <PaginationLink next href="#" />
                 </PaginationItem>

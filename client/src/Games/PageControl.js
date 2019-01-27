@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { PaginationItem, PaginationLink } from 'reactstrap';
 
 class PageControl extends Component {
   render() {
