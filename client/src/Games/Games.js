@@ -10,10 +10,10 @@ import PageControl from './PageControl';
 import '../styles/Games.css';
 
 const Games = (props) => {
-  const platforms = ["PS4", "XBox", "PC", "Nintendo Switch"];
-  const genres = ["Action", "Adventure", "Causal", "RPG", "Horror", "FPS", "Sports", "Racing"];
+  const searchPlatforms = ["PS4", "XBox", "PC", "Nintendo Switch"];
+  const searchGenres = ["Action", "Adventure", "Causal", "RPG", "Horror", "FPS", "Sports", "Racing"];
 
-  const objPlatforms = platforms.map( (c, i) => {
+  const objPlatforms = searchPlatforms.map( (c, i) => {
     let newObj = {};
     i++;
     newObj.id = i;
@@ -21,7 +21,7 @@ const Games = (props) => {
     return newObj;
   });
 
-  const objGenres = genres.map( (g, i) => {
+  const objGenres = searchGenres.map( (g, i) => {
     let newObj = {};
     i++;
     newObj.id = i;
@@ -36,7 +36,7 @@ const Games = (props) => {
   let flag = false;
 
   /**/
-  while (i <= (pageNum+4)) {
+  while (i <= (pageNum+4) ) {
     nextPages.push(<PageControl key={i} pages={i} />);
     if (!flag) {
       let ii = pageNum;
@@ -61,12 +61,11 @@ const Games = (props) => {
         <Col md={6}>
           <Row noGutters>
             <GameTable
-              pageNum={pageNum}
               offset={pageNum-1} />
           </Row>
           <Row noGutters>
-            <Col md={4}></Col>
-            <Col md={4}>
+            <Col md={1}></Col>
+            <Col md={10}>
               <Pagination aria-label="Page navigation example">
                 <PaginationItem>
                   <PaginationLink previous href="#" />
@@ -78,7 +77,7 @@ const Games = (props) => {
                 </PaginationItem>
               </Pagination>
             </Col>
-            <Col md={4}></Col>
+            <Col md={1}></Col>
           </Row>
         </Col>
         <Col md={2}>
@@ -87,11 +86,11 @@ const Games = (props) => {
             <Buttons
               color="primary"
               name="Platforms"
-              platforms={objPlatforms} />
+              objArray={objPlatforms} />
             <Buttons
               color="secondary"
               name="Genres"
-              genre={objGenres} />
+              objArray={objGenres} />
           </ButtonGroup>
         </Col>
         <Col md={2}></Col>

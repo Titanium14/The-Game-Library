@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
@@ -25,17 +26,11 @@ class Buttons extends Component {
   }
 
   render() {
-    let dropOption;
-    if (this.props.platforms !== undefined) {
-      dropOption = this.props.platforms;
-    } else if (this.props.genre !== undefined) {
-      dropOption = this.props.genre;
-    }
-    const dropList = dropOption.map( dOp =>
-      <DropdownItem key={dOp.id} onClick={() => this.onDropDownOptionClick(dOp)}>
-        {dOp.name}
+    const dropList = this.props.objArray.map( dl =>
+      <DropdownItem key={dl.id} onClick={() => this.onDropDownOptionClick(dl)}>
+        {dl.name}
       </DropdownItem>
-    )
+    );
     return (
       <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle caret color={this.props.color}>
@@ -47,6 +42,12 @@ class Buttons extends Component {
       </ButtonDropdown>
     );
   }
+}
+
+Buttons.propTypes = {
+  color: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  objArray: PropTypes.array.isRequired
 }
 
 export default Buttons;

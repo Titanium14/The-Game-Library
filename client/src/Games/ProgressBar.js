@@ -1,7 +1,8 @@
 import React from 'react';
 import { Alert, Progress } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-const Loading = (props) => {
+const ProgressBar = (props) => {
   return (
     <div className="s-spacing-bottom">
       <Alert color="info">
@@ -12,4 +13,8 @@ const Loading = (props) => {
   );
 };
 
-export default Loading;
+ProgressBar.propTypes = {
+  width: PropTypes.number.isRequired
+}
+
+export default ProgressBar;

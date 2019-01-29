@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 
 import { Col, Table, Button } from 'reactstrap';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import GameRow from './GameRow';
-import Loading from './Loading';
-
-const corsLink = "https://cors-anywhere.herokuapp.com/";
-const apiLink = "https://api-v3.igdb.com/games?";
-const limit = 50;
+import ProgressBar from './ProgressBar';
 
 class GameTable extends Component {
   constructor(props) {
@@ -25,21 +22,19 @@ class GameTable extends Component {
       progressWidth: 0,
       addProgress: 50,
       timer: 1500,
-      pageNum: this.props.pageNum
     }
 
     this.handleClickGame = this.handleClickGame.bind(this);
   }
 
   componentDidMount() {
-    axios.get(`${corsLink}${apiLink}fields=${this.state.fields}&filter${this.state.filters}&limit=${limit}&offset=${this.state.offset}&order=slug:asc`, {
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/games?fields=${this.state.fields}&filter${this.state.filters}&limit=10&offset=${this.state.offset}&order=slug:asc`, {
       headers: {
         "user-key": "03a676e5e4c61a2251ce741eb0cb41b4",
         Accept: "application/json"
       }
     })
     .then(response => {
-      // console.log(response.data);
       this.setState({ games: response.data });
     })
     .catch(e => {
@@ -91,17 +86,6 @@ class GameTable extends Component {
       if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       return 0;
     })
-
-    // let limitNumGames = [];
-    // if (this.state.pageNum === '1' && data.length > 0) {
-    //   for (let i = 0; i < limit/100*20; i++) {
-    //     limitNumGames.push(data[i]);
-    //   }
-    // } else if (this.state.pageNum !== '1' && data.length > 0) {
-    //   for (let i = 0; i < limit/100*20; i++) {
-    //     limitNumGames.push(data[i+(this.state.offset*(this.state.pageNum-1))]);
-    //   }
-    // }
 
     let gameList = [];
     if (data.length > 0) {
@@ -162,11 +146,15 @@ class GameTable extends Component {
           </Table>
         ) : (
           // prints please wait when screen is loaded
-          <Loading width={this.state.progressWidth} />
+          <ProgressBar width={this.state.progressWidth} />
         )}
       </Col>
     );
   }
+}
+
+GameTable.propTypes = {
+  offset: PropTypes.number.isRequired
 }
 
 export default GameTable;

@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { PaginationItem, PaginationLink } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-class PageControl extends Component {
-  render() {
-    return (
-      <PaginationItem>
-        <PaginationLink href={`/Games/${this.props.pages}`}>
-          {this.props.pages}
-        </PaginationLink>
-      </PaginationItem>
-    );
-  }
+const PageControl = (props) => {
+  return (
+    <PaginationItem>
+      <PaginationLink href={`/Games/${props.pages}`}>
+        {props.pages}
+      </PaginationLink>
+    </PaginationItem>
+  );
+}
+
+PageControl.propTypes = {
+  pages: PropTypes.number.isRequired
 }
 
 export default PageControl;

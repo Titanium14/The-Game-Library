@@ -6,28 +6,24 @@ class NavBar extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
-    this.state = {
-      isOpen: false
-    };
+    this.state = { isOpen: false };
   }
+
   toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
+    this.setState({ isOpen: !this.state.isOpen });
   }
+
   render() {
     return (
-      <div>
-        <Navbar color="dark" dark expand="md">
-          <NavbarBrand href="/">The Game Library</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              <NavLink href="/Games/1">Games</NavLink>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
+      <Navbar color="dark" dark expand="md">
+        <NavbarBrand href="/">The Game Library</NavbarBrand>
+        <NavbarToggler onClick={this.toggle} />
+        <Collapse isOpen={this.state.isOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            <NavLink href="/Games/1">Games</NavLink>
+          </Nav>
+        </Collapse>
+      </Navbar>
     );
   }
 }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import List from './List';
 
@@ -58,6 +59,21 @@ class GameRow extends Component {
       </tr>
     );
   }
+}
+
+GameRow.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  cover: PropTypes.string.isRequired,
+  platforms: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]).isRequired,
+  genres: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+  ]).isRequired,
+  release_dates: PropTypes.string.isRequired
 }
 
 export default GameRow;
