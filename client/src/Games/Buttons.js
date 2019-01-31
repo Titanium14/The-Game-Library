@@ -12,7 +12,6 @@ class Buttons extends Component {
     }
 
     this.toggle = this.toggle.bind(this);
-    this.onDropDownOptionClick = this.onDropDownOptionClick.bind(this);
   }
 
   toggle() {
@@ -21,19 +20,15 @@ class Buttons extends Component {
     });
   }
 
-  onDropDownOptionClick(dSelected) {
-    this.setState({ dSelected });
-  }
-
   render() {
     const dropList = this.props.objArray.map( dl =>
-      <DropdownItem key={dl.id} onClick={() => this.onDropDownOptionClick(dl)}>
+      <DropdownItem key={dl.id} onClick={this.props.handleDropClick}>
         {dl.name}
       </DropdownItem>
     );
     return (
       <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret color={this.props.color}>
+        <DropdownToggle name={this.props.name} onClick={this.props.handleBtnClick} caret color={this.props.color}>
           {this.props.name}
         </DropdownToggle>
         <DropdownMenu>

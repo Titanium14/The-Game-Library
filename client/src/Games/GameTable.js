@@ -14,7 +14,7 @@ class GameTable extends Component {
     this.state = {
       games: [],
       fields: '*,cover.url,platforms.name,release_dates.human,genres.name',
-      filters: '[platforms][eq]=(6,48,130,49)',
+      platFilter: '[platforms][eq]=(6,48,130,49)',
       offset: this.props.offset*10,
       nameFlag: false,
       timeFlag: true,
@@ -28,7 +28,7 @@ class GameTable extends Component {
   }
 
   componentDidMount() {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/games?fields=${this.state.fields}&filter${this.state.filters}&limit=10&offset=${this.state.offset}&order=slug:asc`, {
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/games?fields=${this.state.fields}&filter${this.state.platFilter}&limit=10&offset=${this.state.offset}&order=slug:asc`, {
       headers: {
         "user-key": "03a676e5e4c61a2251ce741eb0cb41b4",
         Accept: "application/json"

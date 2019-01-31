@@ -59,7 +59,7 @@ class App extends Component {
       the logic executes in the background.
 
       Unfortunately, due to the limitations set by the API regarding free users,
-      the further it will
+      only 150 games can be displayed at any one time.
     */
     let gamePages = [];
     let i = 1;
