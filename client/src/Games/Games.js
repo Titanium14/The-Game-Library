@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, ButtonGroup } from 'reactstrap';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import '../styles/Games.css';
@@ -10,12 +11,11 @@ import GameTable from './GameTable';
 import PageControl from './PageControl';
 import ProgressBar from './ProgressBar';
 
-const corsLink = "https://cors-anywhere.herokuapp.com/";
-const apiLink = "https://api-v3.igdb.com/";
 const pcId = '6';
 const ps4Id = '48';
 const xBox1Id = '130';
 const switchId = '49';
+const arrayFilters = ["Platforms", "Genres"];
 
 class Games extends Component {
   constructor(props) {
@@ -31,32 +31,36 @@ class Games extends Component {
 
       platId: 0,
       genreId: 0,
+      holderId: 0,
 
       timeFlag: true,
-      platFlag: false,
-      genFlag: false,
+      sortFlag: true,
+
+      filterName: "",
 
       paginationIndex: 1,
 
       progressWidth: 0,
       addProgress: 50,
-      timer: 1500
+      timer: 1500,
+
+      sortMode: "asc"
     }
   }
 
   componentDidMount() {
-    axios.get(`${corsLink}${apiLink}platforms?fields=*&filter[id][eq]=(${this.state.filtPlat})&order=name:asc`, {
+    axios.get(`${this.props.cors}${this.props.api}platforms?fields=*&filter[id][eq]=(${this.state.filtPlat})&order=name:${this.state.sortMode}`, {
       headers: {
-        "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+        "user-key": this.props.userKey,
         Accept: "application/json"
       }
     })
     .then(response => {
       this.setState({ platforms: response.data });
 
-      return axios.get(`${corsLink}${apiLink}genres?fields=*&limit=20&order=name:asc`, {
+      return axios.get(`${this.props.cors}${this.props.api}genres?fields=*&limit=20&order=name:${this.state.sortMode}`, {
         headers: {
-          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+          "user-key": this.props.userKey,
           Accept: "application/json"
         }
       })
@@ -64,9 +68,9 @@ class Games extends Component {
     .then(response => {
       this.setState({ genres: response.data });
 
-      return axios.get(`${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`, {
+      return axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:${this.state.sortMode}`, {
         headers: {
-          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+          "user-key": this.props.userKey,
           Accept: "application/json"
         }
       })
@@ -91,64 +95,76 @@ class Games extends Component {
   }
 
   handleBtnClick(e) {
-    if (e.target.getAttribute('name') === "Platforms") {
-      this.setState({
-        platFlag: true,
-        genFlag: false
-      });
-    } else if (e.target.getAttribute('name') === "Genres") {
-      this.setState({
-        platFlag: false,
-        genFlag: true
-      });
-    }
+    this.setState({ filterName: e.target.getAttribute('name') });
   }
 
   onDropDownOptionClick(e) {
+    if (this.state.filterName === 'Remove Filters' && (this.state.platId || this.state.genreId)) {
+      const btnName = e.target.innerHTML;
+      this.setState({ holderId: 0 }, () => {
+        let platformOptions, genreOptions, platIndex, genreIndex;
 
-    if (this.state.platFlag && !this.state.genFlag) {
-      this.setState({ platId: e.target.getAttribute('id') }, () => {
+        if (!platIndex) {
+          platIndex = this.state.platId;
+        }
+        if (!genreIndex) {
+          genreIndex = this.state.genreId;
+        }
 
-        let requestUrl;
+        if (btnName === "Platforms") {
+          platIndex = this.state.holderId;
+          this.setState({ platId: platIndex });
+        } else if (btnName === "Genres") {
+          genreIndex = this.state.holderId;
+          this.setState({ genreId: genreIndex });
+        }
 
-        this.state.genreId !== 0 ?
-          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`
-            :
-          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+        platIndex !== 0 ? platformOptions = platIndex : platformOptions = this.state.filtPlat;
+        genreIndex !== 0 ? genreOptions = `&filter[genres][eq]=${genreIndex}&` : genreOptions = "&";
 
-        axios.get(requestUrl, {
+        axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filter[platforms][eq]=(${platformOptions})${genreOptions}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:${this.state.sortMode}`, {
           headers: {
-            "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+            "user-key": this.props.userKey,
             Accept: "application/json"
           }
         })
-        .then(response => this.setState({ games: response.data }))
+        .then(response => this.setState({
+          games: response.data
+        }))
         .catch(e => console.log("error", e));
       });
-
     } else {
+      this.setState({ holderId: e.target.getAttribute('id') }, () => {
+        let platformOptions, genreOptions, platIndex, genreIndex;
 
-      this.setState({ genreId: e.target.getAttribute('id') }, () => {
+        if (this.state.filterName === 'Platforms') {
+          platIndex = this.state.holderId;
+          this.setState({ platId: platIndex });
+        } else if (this.state.filterName === 'Genres') {
+          genreIndex = this.state.holderId;
+          this.setState({ genreId: genreIndex });
+        }
 
-        let requestUrl;
+        if (!platIndex) {
+          platIndex = this.state.platId;
+        }
+        if (!genreIndex) {
+          genreIndex = this.state.genreId;
+        }
 
-        this.state.platId !== 0 ?
-          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`
-            :
-          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+        platIndex !== 0 ? platformOptions = platIndex : platformOptions = this.state.filtPlat;
+        genreIndex !== 0 ? genreOptions = `&filter[genres][eq]=${genreIndex}&` : genreOptions = "&";
 
-        axios.get(requestUrl, {
+        axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filter[platforms][eq]=(${platformOptions})${genreOptions}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:${this.state.sortMode}`, {
           headers: {
-            "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+            "user-key": this.props.userKey,
             Accept: "application/json"
           }
         })
         .then(response => this.setState({ games: response.data }))
         .catch(e => console.log("error", e));
       });
-
     }
-
   }
 
   onPageClick(e) {
@@ -158,35 +174,43 @@ class Games extends Component {
       timeFlag: true
     }, () => {
 
-      let requestUrl;
+      let platformOptions, genreOptions;
 
-      if (this.state.platId !== 0 && this.state.genreId !== 0) {
+      this.state.platId !== 0 ? platformOptions = this.state.platId : platformOptions = this.state.filtPlat;
+      this.state.genreId !== 0 ? genreOptions = `&filter[genres][eq]=${this.state.genreId}&` : genreOptions = "&";
 
-        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
-
-      } else if (this.state.platId !== 0 && this.state.genreId === 0) {
-
-        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
-
-      } else if (this.state.platId === 0 && this.state.genreId !== 0) {
-
-        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
-
-      } else {
-
-        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&${this.state.filtPlat}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
-
-      }
-
-      axios.get(requestUrl, {
+      axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filter[platforms][eq]=(${platformOptions})${genreOptions}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:${this.state.sortMode}`, {
         headers: {
-          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+          "user-key": this.props.userKey,
           Accept: "application/json"
         }
       })
       .then(response => this.setState({ games: response.data }))
       .catch(e => console.log("error", e));
 
+    });
+  }
+
+  onSortBtnClick() {
+    this.setState(prevState => ({
+      sortFlag: !prevState.sortFlag
+    }), () => {
+      let platformOptions, genreOptions, sortOption;
+
+      this.state.sortFlag ? sortOption = "asc" : sortOption = "desc";
+      this.setState({ sortMode: sortOption });
+
+      this.state.platId !== 0 ? platformOptions = this.state.platId : platformOptions = this.state.filtPlat;
+      this.state.genreId !== 0 ? genreOptions = `&filter[genres][eq]=${this.state.genreId}&` : genreOptions = "&";
+
+      axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filter[platforms][eq]=(${platformOptions})${genreOptions}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:${sortOption}`, {
+        headers: {
+          "user-key": this.props.userKey,
+          Accept: "application/json"
+        }
+      })
+      .then(response => this.setState({ games: response.data }))
+      .catch(e => console.log("error", e));
     });
   }
 
@@ -205,6 +229,14 @@ class Games extends Component {
       return newObj;
     });
 
+    const objFilters = arrayFilters.map( (g, i) => {
+      let newObj = {};
+      i++;
+      newObj.id = i;
+      newObj.name = g;
+      return newObj;
+    });
+
     return (
       <Container fluid className="m-grid-container">
         <Row>
@@ -217,7 +249,9 @@ class Games extends Component {
           <Col md={6}>
             <Row noGutters>
               {this.state.progressWidth >= 100 ? (
-                <GameTable games={this.state.games} />
+                <GameTable
+                  games={this.state.games}
+                  handleSortBtnClick={this.onSortBtnClick.bind(this)} />
               ) : (
                 <ProgressBar width={this.state.progressWidth} />
               )}
@@ -227,7 +261,8 @@ class Games extends Component {
               <Col md={10}>
                 <PageControl
                   paginationIndex={this.state.paginationIndex}
-                  handlePageClick={this.onPageClick.bind(this)} />
+                  handlePageClick={this.onPageClick.bind(this)}
+                  numGames={this.props.numGames} />
               </Col>
               <Col md={1}></Col>
             </Row>
@@ -247,6 +282,12 @@ class Games extends Component {
                 objArray={objGenres}
                 handleDropClick={this.onDropDownOptionClick.bind(this)}
                 handleBtnClick={this.handleBtnClick.bind(this)} />
+              <Buttons
+                color="danger"
+                name="Remove Filters"
+                objArray={objFilters}
+                handleDropClick={this.onDropDownOptionClick.bind(this)}
+                handleBtnClick={this.handleBtnClick.bind(this)} />
             </ButtonGroup>
           </Col>
           <Col md={2}></Col>
@@ -254,6 +295,10 @@ class Games extends Component {
       </Container>
     );
   }
+}
+
+Games.propTypes = {
+  numGames: PropTypes.number.isRequired
 }
 
 export default Games;

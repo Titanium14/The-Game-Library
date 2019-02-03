@@ -1,27 +1,40 @@
-import React from 'react';
-
+import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
+import axios from 'axios';
 
 import NavBar from '../Utils/NavBar';
 
-/*
-  Do an axios request that takes in the name of the particular game.
+class SingleGame extends Component {
+  constructor(props) {
+    super(props);
 
-  Change this into a class.
+    this.state = {
+      fields: '*,cover.*,platforms.*,release_dates.*,genres.*'
+    }
+  }
 
-  Do not forget to add the route for this page.
-*/
+  componentDidMount() {
+    axios.get(`${this.props.corsLink}${this.props.apiLink}games?fields=${this.state.fields}&filter[id][eq]=${this.state.id}`, {
+      headers: {
+        "user-key": this.props.userKey,
+        Accept: "application/json"
+      }
+    })
+    .then(response => this.setState({ games: response.data }))
+    .catch(e => console.log("error", e));
+  }
 
-const SingleGame = (props) => {
-  return (
-    <Container fluid className="m-grid-container">
-      <Row>
-        <Col md="12">
-          <NavBar />
-        </Col>
-      </Row>
-    </Container>
-  );
+  render() {
+    return (
+      <Container fluid className="m-grid-container">
+        <Row>
+          <Col md="12">
+            <NavBar />
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
 }
 
 export default SingleGame;
