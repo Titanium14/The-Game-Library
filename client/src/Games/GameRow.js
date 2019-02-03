@@ -7,9 +7,7 @@ class GameRow extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      id: this.props.id
-    }
+    this.state = { id: this.props.id };
   }
 
   render() {

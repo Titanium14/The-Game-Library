@@ -1,67 +1,19 @@
 import React, { Component } from 'react';
-
 import { Col, Table, Button } from 'reactstrap';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 
 import GameRow from './GameRow';
-import ProgressBar from './ProgressBar';
 
 class GameTable extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      games: [],
-      fields: '*,cover.url,platforms.name,release_dates.human,genres.name',
-      platFilter: '[platforms][eq]=(6,48,130,49)',
-      offset: this.props.offset*10,
       nameFlag: false,
-      timeFlag: true,
-      sortFlag: false,
-      progressWidth: 0,
-      addProgress: 50,
-      timer: 1500,
+      sortFlag: false
     }
 
     this.handleClickGame = this.handleClickGame.bind(this);
-  }
-
-  componentDidMount() {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/games?fields=${this.state.fields}&filter${this.state.platFilter}&limit=10&offset=${this.state.offset}&order=slug:asc`, {
-      headers: {
-        "user-key": "03a676e5e4c61a2251ce741eb0cb41b4",
-        Accept: "application/json"
-      }
-    })
-    .then(response => {
-      this.setState({ games: response.data });
-    })
-    .catch(e => {
-      console.log("error", e);
-    });
-  }
-
-  componentWillUpdate() {
-    if (this.state.timeFlag) {
-      if (this.state.progressWidth >= 100) {
-        this.setState({
-          timeFlag: false
-        });
-      } else {
-        setTimeout(() => {
-          if (this.state.progressWidth === this.state.addProgress) {
-            this.setState({
-              progressWidth: this.state.progressWidth + this.state.addProgress - 1
-            });
-          } else {
-            this.setState({
-              progressWidth: this.state.progressWidth + this.state.addProgress
-            });
-          }
-        }, this.state.timer);
-      }
-    }
   }
 
   handleClickGame() {
@@ -73,19 +25,19 @@ class GameTable extends Component {
   render() {
     let imgSrc, platforms, platformArray, genres, genreArray, release;
 
-    const data = this.state.nameFlag === true ? [].concat(this.state.games)
+    const data = this.state.nameFlag === true ? [].concat(this.props.games)
     .sort((a,b) => {
       if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
       if (a.name.toLowerCase() < b.name.toLowerCase()) return 1;
       return 0;
     })
       :
-    [].concat(this.state.games)
+    [].concat(this.props.games)
     .sort((a,b) => {
       if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
       if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       return 0;
-    })
+    });
 
     let gameList = [];
     if (data.length > 0) {
@@ -129,32 +81,27 @@ class GameTable extends Component {
 
     return (
       <Col md={12}>
-        {this.state.progressWidth >= 100 ? (
-          <Table responsive bordered striped hover>
-            <thead>
-              <tr className="s-table-header-control">
-                <th></th>
-                <th><Button className="s-button" onClick={this.handleClickGame} color="link">Game</Button></th>
-                <th>Platform</th>
-                <th>Genres</th>
-                <th>Release Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {gameList}
-            </tbody>
-          </Table>
-        ) : (
-          // prints please wait when screen is loaded
-          <ProgressBar width={this.state.progressWidth} />
-        )}
+        <Table responsive bordered striped hover>
+          <thead>
+            <tr className="s-table-header-control">
+              <th></th>
+              <th><Button className="s-button" onClick={this.handleClickGame} color="link">Game</Button></th>
+              <th>Platform</th>
+              <th>Genres</th>
+              <th>Release Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {gameList}
+          </tbody>
+        </Table>
       </Col>
     );
   }
 }
 
 GameTable.propTypes = {
-  offset: PropTypes.number.isRequired
+  games: PropTypes.array.isRequired
 }
 
 export default GameTable;

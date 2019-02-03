@@ -1,52 +1,93 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, ButtonGroup, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Container, Row, Col, ButtonGroup } from 'reactstrap';
 import axios from 'axios';
+
+import '../styles/Games.css';
 
 import NavBar from '../Utils/NavBar';
 import Buttons from './Buttons';
 import GameTable from './GameTable';
 import PageControl from './PageControl';
+import ProgressBar from './ProgressBar';
 
-import '../styles/Games.css';
+const corsLink = "https://cors-anywhere.herokuapp.com/";
+const apiLink = "https://api-v3.igdb.com/";
+const pcId = '6';
+const ps4Id = '48';
+const xBox1Id = '130';
+const switchId = '49';
 
 class Games extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      games: [],
       platforms: [],
       genres: [],
+
+      fields: '*,cover.url,platforms.name,release_dates.human,genres.name',
+      filtPlat: `${pcId},${ps4Id},${xBox1Id},${switchId}`,
+
       platId: 0,
-      genreName: "",
+      genreId: 0,
+
+      timeFlag: true,
       platFlag: false,
-      genFlag: false
+      genFlag: false,
+
+      paginationIndex: 1,
+
+      progressWidth: 0,
+      addProgress: 50,
+      timer: 1500
     }
   }
 
   componentDidMount() {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/platforms?fields=*&filter[id][eq]=(6,48,130,49)`, {
+    axios.get(`${corsLink}${apiLink}platforms?fields=*&filter[id][eq]=(${this.state.filtPlat})&order=name:asc`, {
       headers: {
-        "user-key": "03a676e5e4c61a2251ce741eb0cb41b4",
+        "user-key": "65b707308d679ec1b8d3bb331e5239ae",
         Accept: "application/json"
       }
     })
     .then(response => {
-      // console.log(response.data);
       this.setState({ platforms: response.data });
-      return axios.get(`https://cors-anywhere.herokuapp.com/https://api-v3.igdb.com/genres?fields=*&limit=20`, {
+
+      return axios.get(`${corsLink}${apiLink}genres?fields=*&limit=20&order=name:asc`, {
         headers: {
-          "user-key": "03a676e5e4c61a2251ce741eb0cb41b4",
+          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
           Accept: "application/json"
         }
       })
     })
     .then(response => {
-      // console.log(response.data);
       this.setState({ genres: response.data });
+
+      return axios.get(`${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`, {
+        headers: {
+          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+          Accept: "application/json"
+        }
+      })
     })
-    .catch(e => {
-      console.log("error", e);
-    });
+    .then(response => this.setState({ games: response.data }))
+    .catch(e => console.log("error", e));
+  }
+
+  componentWillUpdate() {
+    if (this.state.timeFlag) {
+      if (this.state.progressWidth >= 100) {
+        this.setState({ timeFlag: false });
+      } else {
+        setTimeout(() => {
+          this.state.progressWidth === this.state.addProgress ?
+            this.setState({ progressWidth: this.state.progressWidth + this.state.addProgress - 1 })
+              :
+            this.setState({ progressWidth: this.state.progressWidth + this.state.addProgress });
+        }, this.state.timer);
+      }
+    }
   }
 
   handleBtnClick(e) {
@@ -64,7 +105,89 @@ class Games extends Component {
   }
 
   onDropDownOptionClick(e) {
-    console.log(e.target.innerHTML);
+
+    if (this.state.platFlag && !this.state.genFlag) {
+      this.setState({ platId: e.target.getAttribute('id') }, () => {
+
+        let requestUrl;
+
+        this.state.genreId !== 0 ?
+          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`
+            :
+          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+        axios.get(requestUrl, {
+          headers: {
+            "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+            Accept: "application/json"
+          }
+        })
+        .then(response => this.setState({ games: response.data }))
+        .catch(e => console.log("error", e));
+      });
+
+    } else {
+
+      this.setState({ genreId: e.target.getAttribute('id') }, () => {
+
+        let requestUrl;
+
+        this.state.platId !== 0 ?
+          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`
+            :
+          requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+        axios.get(requestUrl, {
+          headers: {
+            "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+            Accept: "application/json"
+          }
+        })
+        .then(response => this.setState({ games: response.data }))
+        .catch(e => console.log("error", e));
+      });
+
+    }
+
+  }
+
+  onPageClick(e) {
+    this.setState({
+      paginationIndex: parseInt(e.target.getAttribute('name')),
+      progressWidth: 0,
+      timeFlag: true
+    }, () => {
+
+      let requestUrl;
+
+      if (this.state.platId !== 0 && this.state.genreId !== 0) {
+
+        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+      } else if (this.state.platId !== 0 && this.state.genreId === 0) {
+
+        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.platId})&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+      } else if (this.state.platId === 0 && this.state.genreId !== 0) {
+
+        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&filter[platforms][eq]=(${this.state.filtPlat})&filter[genres][eq]=${this.state.genreId}&limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+      } else {
+
+        requestUrl = `${corsLink}${apiLink}games?fields=${this.state.fields}&${this.state.filtPlat}limit=10&offset=${(this.state.paginationIndex-1)*10}&order=slug:asc`;
+
+      }
+
+      axios.get(requestUrl, {
+        headers: {
+          "user-key": "65b707308d679ec1b8d3bb331e5239ae",
+          Accept: "application/json"
+        }
+      })
+      .then(response => this.setState({ games: response.data }))
+      .catch(e => console.log("error", e));
+
+    });
   }
 
   render() {
@@ -82,26 +205,6 @@ class Games extends Component {
       return newObj;
     });
 
-    const pageNum = parseInt(this.props.location.pathname.substr(7));
-    let prevPages = [];
-    let nextPages = [];
-    let i = pageNum;
-    let flag = false;
-
-    /**/
-    while (i <= (pageNum+4) ) {
-      nextPages.push(<PageControl key={i} pages={i} />);
-      if (!flag) {
-        let ii = pageNum;
-        while (ii >= (pageNum-3) && ii > 1) {
-          ii--;
-          prevPages.unshift(<PageControl key={ii} pages={ii} />);
-        }
-        flag = true;
-      }
-      i++;
-    }
-
     return (
       <Container fluid className="m-grid-container">
         <Row>
@@ -113,22 +216,18 @@ class Games extends Component {
           <Col md={2}></Col>
           <Col md={6}>
             <Row noGutters>
-              <GameTable
-                offset={pageNum-1} />
+              {this.state.progressWidth >= 100 ? (
+                <GameTable games={this.state.games} />
+              ) : (
+                <ProgressBar width={this.state.progressWidth} />
+              )}
             </Row>
             <Row noGutters>
               <Col md={1}></Col>
               <Col md={10}>
-                <Pagination aria-label="Page navigation example">
-                  <PaginationItem>
-                    <PaginationLink previous href="#" />
-                  </PaginationItem>
-                  {prevPages}
-                  {nextPages}
-                  <PaginationItem>
-                    <PaginationLink next href="#" />
-                  </PaginationItem>
-                </Pagination>
+                <PageControl
+                  paginationIndex={this.state.paginationIndex}
+                  handlePageClick={this.onPageClick.bind(this)} />
               </Col>
               <Col md={1}></Col>
             </Row>

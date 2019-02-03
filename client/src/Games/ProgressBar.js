@@ -1,15 +1,15 @@
 import React from 'react';
-import { Alert, Progress } from 'reactstrap';
+import { Col, Alert, Progress } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const ProgressBar = (props) => {
   return (
-    <div className="s-spacing-bottom">
+    <Col md={12} className="s-spacing-bottom">
       <Alert color="info">
         Now loading! Please wait!
       </Alert>
       <Progress animated color="info" value={props.width} />
-    </div>
+    </Col>
   );
 };
 

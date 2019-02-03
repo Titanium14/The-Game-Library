@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 class Buttons extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dropdownOpen: false
-    }
+    this.state = { dropdownOpen: false };
 
     this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
 
   render() {
     const dropList = this.props.objArray.map( dl =>
-      <DropdownItem key={dl.id} onClick={this.props.handleDropClick}>
+      <DropdownItem
+          key={dl.id}
+          id={dl.id}
+          onClick={this.props.handleDropClick}>
         {dl.name}
       </DropdownItem>
     );

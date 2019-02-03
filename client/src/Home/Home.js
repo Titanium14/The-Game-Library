@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
-import '../styles/Home.css';
 
 import NavBar from '../Utils/NavBar';
 import Welcome from './Welcome';
@@ -21,7 +20,7 @@ const Home = (props) => {
       <Row>
         <Col md={1}></Col>
         <Col md={10}>
-          <Button href="/Games/1" color="primary" size="lg" block>Begin the search!</Button>
+          <Button href="/Games" color="primary" size="lg" block>Begin the search!</Button>
         </Col>
         <Col md={1}></Col>
       </Row>
