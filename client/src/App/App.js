@@ -25,34 +25,34 @@ class App extends Component {
 
   componentDidMount() {
     // This request specifically fetches the number of games within the API DB.
-    // axios.get(`${corsLink}${apiLink}games/count`, {
-    //   headers: {
-    //     "user-key": userKey,
-    //     Accept: "application/json"
-    //   }
-    // })
-    // .then(response => this.setState({ numGames: response.data.count }))
-    // .catch(e => console.log("error", e));
+    axios.get(`${corsLink}${apiLink}games/count`, {
+      headers: {
+        "user-key": userKey,
+        Accept: "application/json"
+      }
+    })
+    .then(response => this.setState({ numGames: response.data.count }))
+    .catch(e => console.log("error", e));
   }
 
   render() {
 
-    // let gamePages = [];
-    // let i = 1;
-    // while (i <= this.state.numGames) {
-    //   gamePages.push(`/Games/SingleGame/${i}`);
-    //   i++;
-    // }
+    let gamePages = [];
+    let i = 1;
+    while (i <= this.state.numGames) {
+      gamePages.push(`/Games/SingleGame/${i}`);
+      i++;
+    }
 
-    // const pages = gamePages.map(gp =>
-    //   <Route key={gp} exact path={gp} render={(obj) => (
-    //     <SingleGame
-    //       cors={corsLink}
-    //       api={apiLink}
-    //       userKey={userKey}
-    //       location={obj.location.pathname} />
-    //   )} />
-    // );
+    const pages = gamePages.map(gp =>
+      <Route key={gp} exact path={gp} render={(obj) => (
+        <SingleGame
+          cors={corsLink}
+          api={apiLink}
+          userKey={userKey}
+          location={obj.location.pathname} />
+      )} />
+    );
 
     return (
       <Router>
@@ -65,8 +65,7 @@ class App extends Component {
               api={apiLink}
               userKey={userKey} />
           )} />
-          {/*pages*/}
-          <Route exact path='/Games/SingleGame/83079' component={SingleGame} />
+          {pages}
           <Route render={() => <LoadingSpinner /> } />
         </Switch>
       </Router>

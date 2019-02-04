@@ -1,64 +1,71 @@
 import React, { Component } from 'react';
-import { Col, Table, Button } from 'reactstrap';
+import { Col, Table } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import GameRow from './GameRow';
+import SingleRow from './SingleRow';
 
-class GameTable extends Component {
-  render() {
-    let imgSrc, platforms, platformArray, genres, genreArray, release;
+const fieldsArray = ["Aggregated Rating", "Company", "Franchise", "Game Engine", "Genres", "Platforms", "Rating", "Release Date", "Total Rating", "URL"];
 
-    const gameList = this.props.games.map( g => {
-      genreArray = [];
-      platformArray = [];
+class SingleTable extends Component {
+  constructor(props) {
+    super(props);
 
-      g.cover ? imgSrc = g.cover.url : imgSrc = "https://placeholdit.imgix.net/~text?txtsize=8&txt=N/A&w=40&h=40";
-      g.platforms ? platforms = g.platforms : platforms = "Not available";
-      g.genres ? genres = g.genres : genres = "Not available";
-      g.release_dates ? release = g.release_dates[0].human : release = "Not available";
+    this.state = {
+      list: []
+    }
+  }
 
-      if (genres !== "Not available" && (genres && genres.length >= 1)) {
-        let i = 0;
-        while (i < genres.length) {
-          genreArray.push(genres[i].name);
-          i++;
-        }
-        genres = genreArray;
-      }
+  componentDidMount() {
+    const detail = this.props.game;
+    let descArray = [];
 
-      if (platforms !== "Not available" && (platforms && platforms.length >= 1)) {
-        let i = 0;
-        while (i < platforms.length) {
-          platformArray.push(platforms[i].name);
-          i++;
-        }
-        platforms = platformArray;
-      }
+    console.log(detail.involved_companies);
 
-      return <GameRow
-                key={g.id}
-                id={g.id}
-                name={g.name}
-                cover={imgSrc}
-                platforms={platforms}
-                genres={genres}
-                release_dates={release} />
+    detail.aggregated_rating ? descArray.push(detail.aggregated_rating) : descArray.push("Not available");
+    detail.involved_companies ? descArray.push(detail.involved_companies) : descArray.push("Not available");
+    detail.franchise ? descArray.push(detail.franchise) : descArray.push("Not available");
+    detail.game_engines ? descArray.push(detail.game_engines) : descArray.push("Not available");
+    detail.genres ? descArray.push(detail.genres) : descArray.push("Not available");
+    detail.platforms ? descArray.push(detail.platforms) : descArray.push("Not available");
+    detail.rating ? descArray.push(detail.rating) : descArray.push("Not available");
+    detail.release_dates ? descArray.push(detail.release_dates[0].human) : descArray.push("Not available");
+    detail.total_rating ? descArray.push(detail.total_rating) : descArray.push("Not available");
+    detail.url ? descArray.push(detail.url) : descArray.push("Not available");
+
+    const objFields = fieldsArray.map( (f, i) => {
+      let newObj = {};
+      i++;
+      newObj.id = i;
+      newObj.name = f;
+      newObj.desc = descArray[i-1];
+      return newObj;
     });
 
+    this.setState({ list: objFields });
+
+  }
+
+  render() {
+    let detailsList = [];
+    if (this.state.list.length > 0) {
+      detailsList = this.state.list.map( d =>
+        <SingleRow
+          key={d.id}
+          name={d.name}
+          desc={d.desc} />
+      );
+    }
     return (
       <Col md={12}>
         <Table responsive bordered striped hover>
           <thead>
             <tr className="s-table-header-control">
-              <th></th>
-              <th><Button className="s-button" onClick={this.props.handleSortBtnClick} color="link">Game</Button></th>
-              <th>Platform</th>
-              <th>Genres</th>
-              <th>Release Date</th>
+              <th>Fields</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
-            {gameList}
+            {detailsList}
           </tbody>
         </Table>
       </Col>
@@ -66,4 +73,8 @@ class GameTable extends Component {
   }
 }
 
-export default GameTable;
+SingleTable.propTypes = {
+  game: PropTypes.object.isRequired
+}
+
+export default SingleTable;

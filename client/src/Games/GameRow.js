@@ -29,19 +29,19 @@ class GameRow extends Component {
       platformlist.push(<List key={1} listOp={this.props.platforms} />);
     }
 
-    let imgSize, newSize;
+    let propsUrl, newUrl;
     if (this.props.cover !== undefined) {
-      imgSize = this.props.cover;
+      propsUrl = this.props.cover;
       if (this.props.cover.indexOf("thumb") !== -1) {
-        newSize = imgSize.replace("thumb", "micro");
+        newUrl = propsUrl.replace("thumb", "micro");
       } else {
-        newSize = imgSize;
+        newUrl = propsUrl;
       }
     }
 
     return (
       <tr className="s-table-row-control">
-        <td><img className="s-img-size" src={newSize} alt="..." /></td>
+        <td><img className="s-img-size" src={newUrl} alt="..." /></td>
         <td><a href={`/Games/SingleGame/${this.props.id}`}>{this.props.name}</a></td>
         <td>
           <ul className="s-list">

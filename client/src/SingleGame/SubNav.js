@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 
-class SubNav extends React.Component {
+import SingleTable from './SingleTable';
+
+class SubNav extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +30,7 @@ class SubNav extends React.Component {
               className={classnames({ active: this.state.activeTab === '1' })}
               onClick={() => { this.toggle('1'); }}
             >
-              My Budgets
+              Game Details
             </NavLink>
           </NavItem>
           <NavItem>
@@ -36,7 +38,7 @@ class SubNav extends React.Component {
               className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => { this.toggle('2'); }}
             >
-              Certs
+              Screenshots
             </NavLink>
           </NavItem>
           <NavItem>
@@ -44,7 +46,7 @@ class SubNav extends React.Component {
               className={classnames({ active: this.state.activeTab === '3' })}
               onClick={() => { this.toggle('3'); }}
             >
-              My Details
+              Other
             </NavLink>
           </NavItem>
         </Nav>
@@ -52,7 +54,8 @@ class SubNav extends React.Component {
           <TabPane tabId="1">
             <Row>
               <Col md="12">
-                A
+                <SingleTable
+                  game={this.props.game} />
               </Col>
             </Row>
           </TabPane>
