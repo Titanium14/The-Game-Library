@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-class Buttons extends Component {
+class FilterButtons extends Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +37,7 @@ class Buttons extends Component {
   }
 }
 
-Buttons.propTypes = {
+FilterButtons.propTypes = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   objArray: PropTypes.array.isRequired,
@@ -45,4 +45,4 @@ Buttons.propTypes = {
   handleDropClick: PropTypes.func.isRequired
 }
 
-export default Buttons;
+export default FilterButtons;

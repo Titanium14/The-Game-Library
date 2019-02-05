@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap';
+import { Col, Table, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import GameRow from './GameRow';
@@ -46,20 +46,22 @@ class GameTable extends Component {
     });
 
     return (
-      <Table responsive bordered striped hover>
-        <thead>
-          <tr className="s-table-header-control">
-            <th></th>
-            <th><Button className="s-button" onClick={this.props.handleSortBtnClick} color="link">Game</Button></th>
-            <th>Platform</th>
-            <th>Genres</th>
-            <th>Release Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {gameList}
-        </tbody>
-      </Table>
+      <Col lg={12}>
+        <Table responsive bordered striped hover>
+          <thead>
+            <tr className="s-table-header-control">
+              <th></th>
+              <th><Button className="s-button" onClick={this.props.handleSortBtnClick} color="link">Game</Button></th>
+              <th>Platform</th>
+              <th>Genres</th>
+              <th>Release Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {gameList}
+          </tbody>
+        </Table>
+      </Col>
     );
   }
 }

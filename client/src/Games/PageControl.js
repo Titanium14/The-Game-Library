@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Col, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import IndividualPage from './IndividualPage';
@@ -21,14 +21,14 @@ class PageControl extends Component {
     let flag = false;
 
     /**/
-    while (i <= (pageNum+4) && i <= (Math.ceil(this.props.numGames/10))) {
+    while (i <= (pageNum+2) && i <= (Math.ceil(this.props.numGames/10))) {
       nextPages.push(<IndividualPage
                         key={i}
                         pages={i}
                         handlePageClick={this.props.handlePageClick} />);
       if (!flag) {
         let ii = pageNum;
-        while (ii >= (pageNum-3) && ii > 1) {
+        while (ii >= (pageNum-1) && ii > 1) {
           ii--;
           prevPages.unshift(<IndividualPage
                               key={ii}
@@ -41,28 +41,35 @@ class PageControl extends Component {
     }
 
     return (
-      <Pagination aria-label="Page navigation example">
-        {pageNum > 1 ? (
-          <PaginationItem>
-            <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
-          </PaginationItem>
-        ) : (
-          <PaginationItem disabled>
-            <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
-          </PaginationItem>
-        )}
-        {prevPages}
-        {nextPages}
-        {pageNum < Math.ceil(this.props.numGames/10) ? (
-          <PaginationItem>
-            <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
-          </PaginationItem>
-        ) : (
-          <PaginationItem disabled>
-            <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
-          </PaginationItem>
-        )}
-      </Pagination>
+      <>
+        <Col lg={5}>
+          <h6 className="s-subtitle">Showing {((pageNum*10)+1)-10} to {(pageNum*10)} of {Math.ceil(this.props.numGames/10)} games</h6>
+        </Col>
+        <Col lg={7}>
+          <Pagination className="s-pagination" aria-label="Page navigation example">
+              {pageNum > 1 ? (
+                <PaginationItem>
+                  <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
+                </PaginationItem>
+              ) : (
+                <PaginationItem disabled>
+                  <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
+                </PaginationItem>
+              )}
+              {prevPages}
+              {nextPages}
+              {pageNum < Math.ceil(this.props.numGames/10) ? (
+                <PaginationItem>
+                  <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
+                </PaginationItem>
+              ) : (
+                <PaginationItem disabled>
+                  <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
+                </PaginationItem>
+              )}
+          </Pagination>
+        </Col>
+      </>
     );
   }
 }

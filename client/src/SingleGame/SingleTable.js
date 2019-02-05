@@ -54,7 +54,7 @@ class SingleTable extends Component {
       );
     }
     return (
-      <Col md={12}>
+      <Col lg={12}>
         <Table responsive bordered striped hover>
           <thead>
             <tr className="s-table-header-control">
@@ -72,7 +72,10 @@ class SingleTable extends Component {
 }
 
 SingleTable.propTypes = {
-  game: PropTypes.object.isRequired
+  game: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ]).isRequired
 }
 
 export default SingleTable;

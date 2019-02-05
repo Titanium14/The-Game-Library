@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavLink, Form, FormGroup, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class NavBar extends Component {
@@ -27,7 +27,7 @@ class NavBar extends Component {
 
   render() {
     return (
-      <Navbar color="dark" dark expand="md">
+      <Navbar color="dark" dark expand="lg">
         <NavbarBrand href="/">The Game Library</NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
@@ -35,6 +35,12 @@ class NavBar extends Component {
             <NavLink href="/Games">Games</NavLink>
             <NavLink href={`/Games/SingleGame#${this.state.randomNum}`} onClick={this.handleRandomClick}>Random Game</NavLink>
           </Nav>
+          <Form action="/Games/SearchGame" inline>
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+              <Input type="search" name="search" id="search" placeholder="Search for a game..." aria-label="Search" />
+            </FormGroup>
+            <Button>Search</Button>
+          </Form>
         </Collapse>
       </Navbar>
     );

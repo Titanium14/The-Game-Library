@@ -7,11 +7,12 @@ import axios from 'axios';
 import '../styles/App.css';
 
 // Importing all components to be used within this file.
-import LoadingSpinner from '../Utils/LoadingSpinner';
-import NavBar from '../Utils/NavBar';
 import Home from '../Home/Home';
 import Games from '../Games/Games';
+import SearchGame from '../Games/SearchGame';
 import SingleGame from '../SingleGame/SingleGame';
+import LoadingSpinner from '../Utils/LoadingSpinner';
+import NavBar from '../Utils/NavBar';
 
 const corsLink = "https://cors-anywhere.herokuapp.com/";
 const apiLink = "https://api-v3.igdb.com/";
@@ -44,15 +45,23 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path='/' component={Home} />
-            <Route exact path='/Games' render={() => (
+            <Route exact path='/Games' render={(obj) => (
               <Games
                 cors={corsLink}
                 api={apiLink}
                 userKey={userKey}
-                numGames={this.state.numGames} />
+                numGames={this.state.numGames}
+                location={obj.location} />
             )} />
             <Route exact path='/Games/SingleGame' render={(obj) => (
               <SingleGame
+                cors={corsLink}
+                api={apiLink}
+                userKey={userKey}
+                location={obj.location} />
+            )} />
+            <Route exact path='/Games/SearchGame' render={(obj) => (
+              <SearchGame
                 cors={corsLink}
                 api={apiLink}
                 userKey={userKey}

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, ButtonGroup } from 'reactstrap';
+import { Row, Col, ButtonGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import '../styles/Games.css';
 
-import Buttons from './Buttons';
+import FilterButtons from './FilterButtons';
 import GameTable from './GameTable';
 import PageControl from './PageControl';
 import ProgressBar from './ProgressBar';
@@ -48,7 +48,6 @@ class Games extends Component {
   }
 
   componentDidMount() {
-
     axios.get(`${this.props.cors}${this.props.api}platforms?fields=*&filter[id][eq]=(${this.state.filtPlat})&order=name:${this.state.sortMode}`, {
       headers: {
         "user-key": this.props.userKey,
@@ -237,45 +236,39 @@ class Games extends Component {
     });
 
     return (
-      <Container fluid className="m-grid-container">
+      <>
         {this.state.progressWidth >= 100 ? (
           <Row className="m-spacing">
-            <Col md={2}></Col>
-            <Col md={6}>
+            <Col></Col>
+            <Col lg={6}>
               <Row noGutters>
-                <Col md={12}>
-                  <GameTable
-                    games={this.state.games}
-                    handleSortBtnClick={this.onSortBtnClick.bind(this)} />
-                </Col>
+                <GameTable
+                  games={this.state.games}
+                  handleSortBtnClick={this.onSortBtnClick.bind(this)} />
               </Row>
               <Row noGutters>
-                <Col md={1}></Col>
-                <Col md={10}>
-                  <PageControl
-                    paginationIndex={this.state.paginationIndex}
-                    handlePageClick={this.onPageClick.bind(this)}
-                    numGames={this.props.numGames} />
-                </Col>
-                <Col md={1}></Col>
+                <PageControl
+                  paginationIndex={this.state.paginationIndex}
+                  handlePageClick={this.onPageClick.bind(this)}
+                  numGames={this.props.numGames} />
               </Row>
             </Col>
-            <Col md={2}>
+            <Col lg={2}>
               <h5>Filter options:</h5>
               <ButtonGroup vertical>
-                <Buttons
+                <FilterButtons
                   color="primary"
                   name="Platforms"
                   objArray={objPlatforms}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
-                <Buttons
+                <FilterButtons
                   color="secondary"
                   name="Genres"
                   objArray={objGenres}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
-                <Buttons
+                <FilterButtons
                   color="danger"
                   name="Remove Filters"
                   objArray={objFilters}
@@ -283,18 +276,18 @@ class Games extends Component {
                   handleBtnClick={this.handleBtnClick.bind(this)} />
               </ButtonGroup>
             </Col>
-            <Col md={2}></Col>
+            <Col></Col>
           </Row>
         ) : (
-          <Row>
-            <Col md={2}></Col>
-            <Col md={8}>
+          <Row noGutters>
+            <Col></Col>
+            <Col lg={8}>
               <ProgressBar width={this.state.progressWidth} />
             </Col>
-            <Col md={2}></Col>
+            <Col></Col>
           </Row>
         )}
-      </Container>
+      </>
     );
   }
 }

@@ -24,7 +24,7 @@ class SubNav extends Component {
   }
   render() {
     return (
-      <div>
+      <>
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -39,7 +39,7 @@ class SubNav extends Component {
               className={classnames({ active: this.state.activeTab === '2' })}
               onClick={() => { this.toggle('2'); }}
             >
-              Screenshots
+              Ratings
             </NavLink>
           </NavItem>
           <NavItem>
@@ -47,41 +47,57 @@ class SubNav extends Component {
               className={classnames({ active: this.state.activeTab === '3' })}
               onClick={() => { this.toggle('3'); }}
             >
-              Other
+              Screenshots
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '4' })}
+              onClick={() => { this.toggle('4'); }}
+            >
+              Videos
             </NavLink>
           </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-            <Row>
-              <Col md="12">
-                <SingleTable
-                  game={this.props.game} />
-              </Col>
+            <Row noGutters>
+              <SingleTable
+                game={this.props.game} />
             </Row>
           </TabPane>
           <TabPane tabId="2">
-            <Row>
-              <Col md="12">
+            <Row noGutters>
+              <Col lg="12">
                 A
               </Col>
             </Row>
           </TabPane>
           <TabPane tabId="3">
-            <Row>
-              <Col md="12">
+            <Row noGutters>
+              <Col lg="12">
+                A
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="4">
+            <Row noGutters>
+              <Col lg="12">
                 A
               </Col>
             </Row>
           </TabPane>
         </TabContent>
-      </div>
+      </>
     );
   }
 }
 
 SubNav.propTypes = {
-  game: PropTypes.object.isRequired
+  game: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.object
+  ]).isRequired
 }
 
 export default SubNav;

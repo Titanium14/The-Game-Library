@@ -34,7 +34,7 @@ h6 {
   font-size: 0.8rem;
 }
 
-.m-grid-container, .row, .col-md-12 {
+.m-grid-container {
   margin: 0;
   padding: 0;
 }
