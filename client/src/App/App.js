@@ -7,7 +7,8 @@ import axios from 'axios';
 import '../styles/App.css';
 
 // Importing all components to be used within this file.
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../Utils/LoadingSpinner';
+import NavBar from '../Utils/NavBar';
 import Home from '../Home/Home';
 import Games from '../Games/Games';
 import SingleGame from '../SingleGame/SingleGame';
@@ -37,38 +38,30 @@ class App extends Component {
 
   render() {
 
-    let gamePages = [];
-    let i = 1;
-    while (i <= this.state.numGames) {
-      gamePages.push(`/Games/SingleGame/${i}`);
-      i++;
-    }
-
-    const pages = gamePages.map(gp =>
-      <Route key={gp} exact path={gp} render={(obj) => (
-        <SingleGame
-          cors={corsLink}
-          api={apiLink}
-          userKey={userKey}
-          location={obj.location.pathname} />
-      )} />
-    );
-
     return (
-      <Router>
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/Games' render={() => (
-            <Games
-              numGames={this.state.numGames}
-              cors={corsLink}
-              api={apiLink}
-              userKey={userKey} />
-          )} />
-          {pages}
-          <Route render={() => <LoadingSpinner /> } />
-        </Switch>
-      </Router>
+      <>
+        <NavBar numGames={this.state.numGames} />
+        <Router>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/Games' render={() => (
+              <Games
+                cors={corsLink}
+                api={apiLink}
+                userKey={userKey}
+                numGames={this.state.numGames} />
+            )} />
+            <Route exact path='/Games/SingleGame' render={(obj) => (
+              <SingleGame
+                cors={corsLink}
+                api={apiLink}
+                userKey={userKey}
+                location={obj.location} />
+            )} />
+            <Route render={() => <LoadingSpinner /> } />
+          </Switch>
+        </Router>
+      </>
     );
   }
 }

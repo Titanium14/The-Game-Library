@@ -19,12 +19,10 @@ class SingleTable extends Component {
     const detail = this.props.game;
     let descArray = [];
 
-    console.log(detail.involved_companies);
-
     detail.aggregated_rating ? descArray.push(detail.aggregated_rating) : descArray.push("Not available");
     detail.involved_companies ? descArray.push(detail.involved_companies) : descArray.push("Not available");
-    detail.franchise ? descArray.push(detail.franchise) : descArray.push("Not available");
-    detail.game_engines ? descArray.push(detail.game_engines) : descArray.push("Not available");
+    detail.franchise ? descArray.push(detail.franchise.name) : descArray.push("Not available");
+    detail.game_engines ? descArray.push(detail.game_engines[0].name) : descArray.push("Not available");
     detail.genres ? descArray.push(detail.genres) : descArray.push("Not available");
     detail.platforms ? descArray.push(detail.platforms) : descArray.push("Not available");
     detail.rating ? descArray.push(detail.rating) : descArray.push("Not available");
@@ -60,7 +58,7 @@ class SingleTable extends Component {
         <Table responsive bordered striped hover>
           <thead>
             <tr className="s-table-header-control">
-              <th>Fields</th>
+              <th className="s-column-size">Fields</th>
               <th>Description</th>
             </tr>
           </thead>

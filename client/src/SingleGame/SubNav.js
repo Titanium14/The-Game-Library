@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import SingleTable from './SingleTable';
@@ -77,6 +78,10 @@ class SubNav extends Component {
       </div>
     );
   }
+}
+
+SubNav.propTypes = {
+  game: PropTypes.object.isRequired
 }
 
 export default SubNav;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardTitle, CardText, CardImg } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 class GameInfoCard extends Component {
   render() {
@@ -7,7 +8,7 @@ class GameInfoCard extends Component {
     if (this.props.cover !== undefined) {
       propsUrl = this.props.cover;
       if (this.props.cover.indexOf("thumb") !== -1) {
-        newUrl = propsUrl.replace("thumb", "cover_big");
+        newUrl = propsUrl.replace("thumb", "720p");
       } else {
         newUrl = propsUrl;
       }
@@ -23,6 +24,12 @@ class GameInfoCard extends Component {
       </Card>
     );
   }
-};
+}
+
+GameInfoCard.propTypes = {
+  cover: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  summary: PropTypes.string.isRequired
+}
 
 export default GameInfoCard;

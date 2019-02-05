@@ -21,7 +21,7 @@ class PageControl extends Component {
     let flag = false;
 
     /**/
-    while (i <= (pageNum+4) && i < (Math.ceil(this.props.numGames/10))) {
+    while (i <= (pageNum+4) && i <= (Math.ceil(this.props.numGames/10))) {
       nextPages.push(<IndividualPage
                         key={i}
                         pages={i}
@@ -42,14 +42,26 @@ class PageControl extends Component {
 
     return (
       <Pagination aria-label="Page navigation example">
-        <PaginationItem>
-          <PaginationLink previous href="#" />
-        </PaginationItem>
+        {pageNum > 1 ? (
+          <PaginationItem>
+            <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
+          </PaginationItem>
+        ) : (
+          <PaginationItem disabled>
+            <PaginationLink previous name={pageNum-1} onClick={this.props.handlePageClick} />
+          </PaginationItem>
+        )}
         {prevPages}
         {nextPages}
-        <PaginationItem>
-          <PaginationLink next href="#" />
-        </PaginationItem>
+        {pageNum < Math.ceil(this.props.numGames/10) ? (
+          <PaginationItem>
+            <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
+          </PaginationItem>
+        ) : (
+          <PaginationItem disabled>
+            <PaginationLink next name={pageNum+1} onClick={this.props.handlePageClick} />
+          </PaginationItem>
+        )}
       </Pagination>
     );
   }

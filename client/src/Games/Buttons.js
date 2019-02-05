@@ -40,7 +40,9 @@ class Buttons extends Component {
 Buttons.propTypes = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  objArray: PropTypes.array.isRequired
+  objArray: PropTypes.array.isRequired,
+  handleBtnClick: PropTypes.func.isRequired,
+  handleDropClick: PropTypes.func.isRequired
 }
 
 export default Buttons;

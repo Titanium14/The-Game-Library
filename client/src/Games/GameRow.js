@@ -42,7 +42,7 @@ class GameRow extends Component {
     return (
       <tr className="s-table-row-control">
         <td><img className="s-img-size" src={newUrl} alt="..." /></td>
-        <td><a href={`/Games/SingleGame/${this.props.id}`}>{this.props.name}</a></td>
+        <td><a href={`/Games/SingleGame#${this.props.id}`}>{this.props.name}</a></td>
         <td>
           <ul className="s-list">
             {platformlist}
