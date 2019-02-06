@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Card, CardHeader, ListGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import GameInfoCard from '../Utils/GameInfoCard';
+import SearchList from './SearchList';
 
 class SearchGame extends Component {
   constructor(props) {
@@ -13,12 +13,13 @@ class SearchGame extends Component {
       searched: [],
       fields: '*,cover.url,platforms.name,release_dates.human,genres.name',
       searchOp: `${this.props.location.search.substr(8)}`,
+      searchValue: `${this.props.location.hash.substr(1)}`,
       searchFlag: false
     }
   }
 
   componentDidMount() {
-    axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&search=${this.state.searchOp}`, {
+    axios.get(`${this.props.cors}${this.props.api}games?fields=${this.state.fields}&filters[version_parent][eq]=null&search=${this.state.searchOp}&limit=20`, {
       headers: {
         "user-key": this.props.userKey,
         Accept: "application/json"
@@ -29,33 +30,34 @@ class SearchGame extends Component {
   }
 
   render() {
-    const cardDetails = this.state.searched.map( c => {
-      let gameCover, summary;
-      c.cover ? gameCover = c.cover.url : gameCover = "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=284&h=160";
-      c.summary ?
-        summary = c.summary
-          :
-        c.storyline ?
-          summary = c.storyline
-            :
-          summary = "No summary available";
-
-      return <GameInfoCard
-                key={c.id}
-                name={c.name}
-                cover={gameCover}
-                summary={summary} />
-    });
+    const listDetails = this.state.searched.map( c =>
+      <SearchList
+          key={c.id}
+          id={c.id}
+          name={c.name} />
+    );
     return (
       <Row>
         <Col></Col>
         <Col lg={4}>
-          {cardDetails}
+          <Card>
+            <CardHeader tag="h4">You searched for {decodeURI(this.state.searchValue.toUpperCase())}...</CardHeader>
+            <ListGroup>
+              {listDetails}
+            </ListGroup>
+          </Card>
         </Col>
         <Col></Col>
       </Row>
     );
   }
+}
+
+SearchGame.propTypes = {
+  cors: PropTypes.string.isRequired,
+  api: PropTypes.string.isRequired,
+  userKey: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired
 }
 
 export default SearchGame;

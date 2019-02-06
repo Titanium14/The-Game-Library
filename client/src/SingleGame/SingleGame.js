@@ -6,7 +6,7 @@ import axios from 'axios';
 import '../styles/SingleGame.css';
 
 import SubNav from './SubNav';
-import GameInfoCard from '../Utils/GameInfoCard';
+import GameInfo from './GameInfo';
 import AlertMsg from '../Utils/AlertMsg'
 import LoadingSpinner from '../Utils/LoadingSpinner'
 
@@ -46,9 +46,8 @@ class SingleGame extends Component {
   render() {
     let name, gameCover, summary;
     if (this.state.resFlag && this.state.game !== []) {
-      console.log("Hi");
       name = this.state.game.name;
-      this.state.game.cover ? gameCover = this.state.game.cover.url : gameCover = "https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=284&h=160";
+      this.state.game.cover ? gameCover = this.state.game.cover.url : gameCover = "https://placeholdit.imgix.net/~text?txtsize=33&txt=NO IMAGE&w=264&h=200";
       this.state.game.summary ?
         summary = this.state.game.summary
           :
@@ -64,12 +63,12 @@ class SingleGame extends Component {
           <>
             <Row className="m-spacing" noGutters>
               <Col></Col>
-              <Col lg={4}>
-              <GameInfoCard
-                name={name}
-                cover={gameCover}
-                summary={summary} />
-              </Col>
+              <Col lg={8}>
+                <GameInfo
+                  name={name}
+                  cover={gameCover}
+                  summary={summary} />
+                </Col>
               <Col></Col>
             </Row>
             <Row className="m-spacing" noGutters>
@@ -86,7 +85,8 @@ class SingleGame extends Component {
           <Row className="m-spacing" noGutters>
             <Col></Col>
             <Col lg={6}>
-              <AlertMsg />
+              <AlertMsg
+                type="Game" />
             </Col>
             <Col></Col>
           </Row>

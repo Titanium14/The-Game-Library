@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import SingleTable from './SingleTable';
+import Ratings from './Ratings';
+import Media from './Media';
 
 class SubNav extends Component {
   constructor(props) {
@@ -69,21 +71,26 @@ class SubNav extends Component {
           <TabPane tabId="2">
             <Row noGutters>
               <Col lg="12">
-                A
+                <Ratings
+                  game={this.props.game} />
               </Col>
             </Row>
           </TabPane>
           <TabPane tabId="3">
             <Row noGutters>
               <Col lg="12">
-                A
+              <Media
+                name="Screenshots"
+                mediaType={this.props.game.screenshots} />
               </Col>
             </Row>
           </TabPane>
           <TabPane tabId="4">
             <Row noGutters>
               <Col lg="12">
-                A
+                <Media
+                  name="Videos"
+                  mediaType={this.props.game.videos} />
               </Col>
             </Row>
           </TabPane>

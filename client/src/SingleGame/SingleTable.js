@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import SingleRow from './SingleRow';
 
-const fieldsArray = ["Aggregated Rating", "Company", "Franchise", "Game Engine", "Genres", "Platforms", "Rating", "Release Date", "Total Rating", "URL"];
+const fieldsArray = ["Company", "Franchise", "Game Engine", "Genres", "Platforms", "Release Date", "URL"];
 
 class SingleTable extends Component {
   constructor(props) {
@@ -19,15 +19,12 @@ class SingleTable extends Component {
     const detail = this.props.game;
     let descArray = [];
 
-    detail.aggregated_rating ? descArray.push(detail.aggregated_rating) : descArray.push("Not available");
     detail.involved_companies ? descArray.push(detail.involved_companies) : descArray.push("Not available");
     detail.franchise ? descArray.push(detail.franchise.name) : descArray.push("Not available");
     detail.game_engines ? descArray.push(detail.game_engines[0].name) : descArray.push("Not available");
     detail.genres ? descArray.push(detail.genres) : descArray.push("Not available");
     detail.platforms ? descArray.push(detail.platforms) : descArray.push("Not available");
-    detail.rating ? descArray.push(detail.rating) : descArray.push("Not available");
     detail.release_dates ? descArray.push(detail.release_dates[0].human) : descArray.push("Not available");
-    detail.total_rating ? descArray.push(detail.total_rating) : descArray.push("Not available");
     detail.url ? descArray.push(detail.url) : descArray.push("Not available");
 
     const objFields = fieldsArray.map( (f, i) => {
