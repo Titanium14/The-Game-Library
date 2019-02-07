@@ -13,7 +13,7 @@ class GamesRow extends Component {
   render() {
     return (
       <tr className="s-table-row-control">
-        <td><img className="s-img-size" src={displayImage(this.props.cover, "micro")} alt="..." /></td>
+        <td><img className="s-img-size" src={displayImage(this.props.cover, "micro", 40, 40, 8)} alt="..." /></td>
         <td><a href={`/Games/SingleGame#${this.props.id}`}>{this.props.name}</a></td>
         <td>
           <ul className="s-list">

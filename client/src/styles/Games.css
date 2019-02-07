@@ -24,7 +24,6 @@
 .s-subtitle {
   font-size: 0.8rem;
   opacity: 0.6;
-  padding-top: 10px;
 }
 
 .s-remove-event span {
@@ -32,8 +31,28 @@
 }
 
 @media only screen and (min-width: 992px) {
+  .s-subtitle-padding {
+    padding-top: 10px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
   .s-pagination {
     float: right;
+  }
+}
+
+@media only screen and (max-width: 992px) {
+  .s-pagination .pagination {
+    margin: 0 0 10px;
+    justify-content: center;
+  }
+}
+
+@media only screen and (min-height: 200px) {
+  .s-limit-size {
+    height: 300px;
+    overflow: scroll;
   }
 }
 

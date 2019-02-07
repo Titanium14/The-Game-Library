@@ -60,7 +60,7 @@ class SingleGame extends Component {
       this.state.game.screenshots ? screenshot = this.state.game.screenshots[0].image_id : screenshot = undefined;
 
       divStyle = {
-        backgroundImage: 'url(' + displayImage(screenshot, "1080p_2x") + ')'
+        backgroundImage: 'url(' + displayImage(screenshot, "1080p_2x", 1920, 500, 36) + ')'
       };
     }
 
@@ -81,7 +81,7 @@ class SingleGame extends Component {
               </Col>
               <Col></Col>
             </Row>
-            <Row className="m-spacing" noGutters>
+            <Row className="m-spacing m-spacing-bottom" noGutters>
               <Col></Col>
               <Col lg={8}>
                 <SubNav game={this.state.game} />

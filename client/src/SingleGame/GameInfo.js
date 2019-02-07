@@ -9,7 +9,7 @@ const GameInfo = (props) => {
     <>
       <Row className="s-row-positioning" noGutters>
         <Col className="text-center" lg={4}>
-          <img className="border border-dark rounded " src={displayImage(props.cover, "cover_big")} alt="..." />
+          <img className="border border-dark rounded " src={displayImage(props.cover, "cover_big", 264, 374, 24)} alt="..." />
         </Col>
         <Col lg={7}>
           <h1>{props.name}</h1>

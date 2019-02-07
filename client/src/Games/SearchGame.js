@@ -34,7 +34,7 @@ class SearchGame extends Component {
       <Row noGutters>
         <Col></Col>
         <Col lg={4}>
-          <Card className="m-spacing">
+          <Card className="m-spacing m-spacing-bottom">
             <CardHeader tag="h4">You searched for {decodeURI(this.state.searchValue.toUpperCase())}...</CardHeader>
             <ListGroup>
               {searchResults(this.state.searched)}

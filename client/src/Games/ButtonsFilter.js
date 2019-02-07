@@ -19,11 +19,11 @@ class ButtonsFilter extends Component {
 
   render() {
     return (
-      <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+      <ButtonDropdown direction={this.props.direction} isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle name={this.props.name} onClick={this.props.handleBtnClick} caret color={this.props.color}>
           {this.props.name}
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu className={this.props.direction === "down" && this.props.name === "Genres" ? "s-limit-size" : ""}>
           {dropItems(this.props.objArray, this.props.handleDropClick)}
         </DropdownMenu>
       </ButtonDropdown>
@@ -34,6 +34,7 @@ class ButtonsFilter extends Component {
 ButtonsFilter.propTypes = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  direction: PropTypes.string.isRequired,
   objArray: PropTypes.array.isRequired,
   handleBtnClick: PropTypes.func.isRequired,
   handleDropClick: PropTypes.func.isRequired

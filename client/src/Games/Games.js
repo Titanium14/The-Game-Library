@@ -45,11 +45,20 @@ class Games extends Component {
       addProgress: 50,
       timer: 1500,
 
-      sortMode: "asc"
+      sortMode: "asc",
+
+      width: 0
     }
+
+    window.addEventListener("resize", this.resizing);
   }
 
+  resizing = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
   componentDidMount() {
+    this.resizing();
     axios.get(`${this.props.cors}${this.props.api}platforms?fields=*&filter[id][eq]=(${this.state.filtPlat})&order=name:${this.state.sortMode}`, {
       headers: {
         "user-key": this.props.userKey,
@@ -94,6 +103,10 @@ class Games extends Component {
         }, this.state.timer);
       }
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.resizing);
   }
 
   handleBtnClick(e) {
@@ -216,6 +229,7 @@ class Games extends Component {
   }
 
   render() {
+
     return (
       <>
         {this.state.progressWidth >= 100 ? (
@@ -227,7 +241,7 @@ class Games extends Component {
                   games={this.state.games}
                   handleSortBtnClick={this.onSortBtnClick.bind(this)} />
               </Row>
-              <Row noGutters>
+              <Row className={this.state.width < 992 ? "text-center" : ""} noGutters>
                 <PageControl
                   paginationIndex={this.state.paginationIndex}
                   handlePageClick={this.onPageClick.bind(this)}
@@ -236,22 +250,25 @@ class Games extends Component {
             </Col>
             <Col lg={2} className="order-1 order-lg-2 text-center">
               <h5>Filter options:</h5>
-              <ButtonGroup vertical>
+              <ButtonGroup className="m-spacing-bottom" vertical={this.state.width < 992 ? false : true}>
                 <ButtonsFilter
                   color="primary"
                   name="Platforms"
+                  direction={this.state.width < 992 ? "down" : "left"}
                   objArray={objOptions(this.state.platforms)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
                 <ButtonsFilter
                   color="secondary"
                   name="Genres"
+                  direction={this.state.width < 992 ? "down" : "left"}
                   objArray={objOptions(this.state.genres)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
                 <ButtonsFilter
                   color="danger"
                   name="Remove Filters"
+                  direction={this.state.width < 992 ? "down" : "left"}
                   objArray={objCustomOptions(arrayFilters)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />

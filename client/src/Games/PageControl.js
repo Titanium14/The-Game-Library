@@ -9,10 +9,10 @@ const PageControl = (props) => {
   return (
     <>
       <Col lg={5} className="order-2 order-lg-1">
-        <h6 className="s-subtitle">Showing {((pageNum*10)+1)-10} to {(pageNum*10)} of {Math.ceil(props.numGames/10)} games</h6>
+        <h6 className="m-spacing-bottom s-subtitle s-subtitle-padding">Showing {((pageNum*10)+1)-10} to {(pageNum*10)} of {Math.ceil(props.numGames/10)} games</h6>
       </Col>
       <Col lg={7} className="order-1 order-lg-2">
-        <Pagination className="s-pagination" aria-label="Page navigation example">
+        <Pagination className="s-pagination" size="sm" aria-label="Page navigation example">
             <PaginationItem disabled={pageNum > 1 ? false : true}>
               <PaginationLink className="s-remove-event" previous name={pageNum-1} onClick={props.handlePageClick} />
             </PaginationItem>

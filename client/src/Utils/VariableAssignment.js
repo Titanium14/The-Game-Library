@@ -3,9 +3,9 @@ import React from 'react';
 import PageList from '../Games/PageList';
 import PageIndividual from '../Games/PageIndividual';
 
-export const displayImage = (imgSrc, size) => {
+export const displayImage = (imgSrc, size, w, h, textSize) => {
   let image;
-  imgSrc ? image = `//images.igdb.com/igdb/image/upload/t_${size}/${imgSrc}.jpg` : image = "https://placeholdit.imgix.net/~text?txtsize=8&txt=N/A&w=40&h=40";
+  imgSrc ? image = `//images.igdb.com/igdb/image/upload/t_${size}/${imgSrc}.jpg` : image = `https://placeholdit.imgix.net/~text?txtsize=${textSize}&txt=N/A&w=${w}&h=${h}`;
   return image;
 }
 
@@ -54,4 +54,31 @@ export const arrayPrevPages = (pageNum, numGames, handleEvent) => {
                         handlePageClick={handleEvent} />);
   }
   return prevPages;
+}
+
+export const video = (videoId) => {
+  return `https://www.youtube.com/embed/${videoId}`;
+}
+
+export const rowInfo = (name, desc) => {
+  let propAppend = "";
+
+  if (Array.isArray(desc)) {
+    let arrayList = desc;
+
+    for (let i = 0; i < arrayList.length; i++) {
+      let concatString;
+
+      name === "Company" ?
+        concatString = `${arrayList[i].company.name}`
+          :
+        concatString = `${arrayList[i].name}`;
+
+      i < arrayList.length-1 ?
+        propAppend = propAppend.concat(`${concatString}, `)
+          :
+        propAppend = propAppend.concat(concatString);
+    }
+  }
+  return propAppend;
 }
