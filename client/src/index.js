@@ -15,7 +15,7 @@ import App from './App/App';
 ReactDOM.render(
   <Container fluid className="m-grid-container">
     <Row noGutters>
-      <Col md={12}>
+      <Col lg={12}>
         <App />
       </Col>
     </Row>

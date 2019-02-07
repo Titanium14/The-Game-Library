@@ -16,7 +16,7 @@ import NavBar from '../Utils/NavBar';
 
 const corsLink = "https://cors-anywhere.herokuapp.com/";
 const apiLink = "https://api-v3.igdb.com/";
-const userKey = "dcc5fb7ee6584a770c1966fb130e7c58";
+const userKey = "a2bc073f8cb16c8a299a4e5185f792e9";
 
 class App extends Component {
   constructor(props) {
@@ -38,7 +38,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <>
         <NavBar numGames={this.state.numGames} />

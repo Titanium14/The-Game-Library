@@ -5,10 +5,12 @@ import axios from 'axios';
 
 import '../styles/Games.css';
 
-import FilterButtons from './FilterButtons';
-import GameTable from './GameTable';
+import ButtonsFilter from './ButtonsFilter';
+import GamesTable from './GamesTable';
 import PageControl from './PageControl';
 import ProgressBar from './ProgressBar';
+
+import { objOptions, objCustomOptions } from '../Utils/ObjectGenerator';
 
 const pcId = '6';
 const ps4Id = '48';
@@ -25,7 +27,7 @@ class Games extends Component {
       platforms: [],
       genres: [],
 
-      fields: '*,cover.url,platforms.name,release_dates.human,genres.name',
+      fields: '*,cover.image_id,platforms.name,release_dates.human,genres.name',
       filtPlat: `${pcId},${ps4Id},${xBox1Id},${switchId}`,
 
       platId: 0,
@@ -166,12 +168,13 @@ class Games extends Component {
   }
 
   onPageClick(e) {
+    console.log(e.target.getAttribute('name'));
+    console.log(e.target);
     this.setState({
       paginationIndex: parseInt(e.target.getAttribute('name')),
       progressWidth: 0,
       timeFlag: true
     }, () => {
-      console.log(this.state.paginationIndex);
       let platformOptions, genreOptions;
 
       this.state.platId !== 0 ? platformOptions = this.state.platId : platformOptions = this.state.filtPlat;
@@ -213,36 +216,14 @@ class Games extends Component {
   }
 
   render() {
-    const objPlatforms = this.state.platforms.map( p => {
-      let newObj = {};
-      newObj.id = p.id;
-      newObj.name = p.name;
-      return newObj;
-    });
-
-    const objGenres = this.state.genres.map( g => {
-      let newObj = {};
-      newObj.id = g.id;
-      newObj.name = g.name;
-      return newObj;
-    });
-
-    const objFilters = arrayFilters.map( (g, i) => {
-      let newObj = {};
-      i++;
-      newObj.id = i;
-      newObj.name = g;
-      return newObj;
-    });
-
     return (
       <>
         {this.state.progressWidth >= 100 ? (
-          <Row className="m-spacing">
-            <Col></Col>
-            <Col lg={6}>
+          <Row className="m-spacing" noGutters>
+            <Col lg={2} className="order-first"></Col>
+            <Col lg={6} className="order-2 order-lg-1">
               <Row noGutters>
-                <GameTable
+                <GamesTable
                   games={this.state.games}
                   handleSortBtnClick={this.onSortBtnClick.bind(this)} />
               </Row>
@@ -253,30 +234,30 @@ class Games extends Component {
                   numGames={this.props.numGames} />
               </Row>
             </Col>
-            <Col lg={2}>
+            <Col lg={2} className="order-1 order-lg-2 text-center">
               <h5>Filter options:</h5>
               <ButtonGroup vertical>
-                <FilterButtons
+                <ButtonsFilter
                   color="primary"
                   name="Platforms"
-                  objArray={objPlatforms}
+                  objArray={objOptions(this.state.platforms)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
-                <FilterButtons
+                <ButtonsFilter
                   color="secondary"
                   name="Genres"
-                  objArray={objGenres}
+                  objArray={objOptions(this.state.genres)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
-                <FilterButtons
+                <ButtonsFilter
                   color="danger"
                   name="Remove Filters"
-                  objArray={objFilters}
+                  objArray={objCustomOptions(arrayFilters)}
                   handleDropClick={this.onDropDownOptionClick.bind(this)}
                   handleBtnClick={this.handleBtnClick.bind(this)} />
               </ButtonGroup>
             </Col>
-            <Col></Col>
+            <Col lg={2} className="order-last"></Col>
           </Row>
         ) : (
           <Row noGutters>

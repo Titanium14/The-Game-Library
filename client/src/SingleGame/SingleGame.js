@@ -7,8 +7,10 @@ import '../styles/SingleGame.css';
 
 import SubNav from './SubNav';
 import GameInfo from './GameInfo';
-import AlertMsg from '../Utils/AlertMsg'
-import LoadingSpinner from '../Utils/LoadingSpinner'
+import AlertMsg from '../Utils/AlertMsg';
+import LoadingSpinner from '../Utils/LoadingSpinner';
+
+import { displayImage } from '../Utils/VariableAssignment';
 
 class SingleGame extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class SingleGame extends Component {
       game: [],
       resFlag: false,
       existFlag: true,
-      fields: '*,cover.url,franchise.name,game_engines.name,genres.name,involved_companies.company.name,platforms.name,release_dates.human,screenshots.url,videos.*'
+      fields: '*,cover.*,franchise.name,game_engines.name,genres.name,involved_companies.company.name,platforms.name,release_dates.human,screenshots.*,videos.*'
     }
   }
 
@@ -44,10 +46,10 @@ class SingleGame extends Component {
   }
 
   render() {
-    let name, gameCover, summary;
+    let name, gameCover, summary, screenshot, divStyle;
     if (this.state.resFlag && this.state.game !== []) {
       name = this.state.game.name;
-      this.state.game.cover ? gameCover = this.state.game.cover.url : gameCover = "https://placeholdit.imgix.net/~text?txtsize=33&txt=NO IMAGE&w=264&h=200";
+      this.state.game.cover ? gameCover = this.state.game.cover.image_id : gameCover = null;
       this.state.game.summary ?
         summary = this.state.game.summary
           :
@@ -55,20 +57,28 @@ class SingleGame extends Component {
           summary = this.state.game.storyline
             :
           summary = "No summary available";
+      this.state.game.screenshots ? screenshot = this.state.game.screenshots[0].image_id : screenshot = undefined;
+
+      divStyle = {
+        backgroundImage: 'url(' + displayImage(screenshot, "1080p_2x") + ')'
+      };
     }
 
     return (
       <>
         {this.state.resFlag && this.state.game !== [] ? (
           <>
-            <Row className="m-spacing" noGutters>
+            <Row noGutters>
+              <Col className="s-overlay" style={divStyle}></Col>
+            </Row>
+            <Row noGutters>
               <Col></Col>
               <Col lg={8}>
                 <GameInfo
                   name={name}
                   cover={gameCover}
                   summary={summary} />
-                </Col>
+              </Col>
               <Col></Col>
             </Row>
             <Row className="m-spacing" noGutters>

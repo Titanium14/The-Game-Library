@@ -1,38 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-class GameInfo extends Component {
-  render() {
-    let propsCover, insertCover;
-    propsCover = this.props.cover;
-    if (propsCover.indexOf("thumb") !== -1) {
-      insertCover = propsCover.replace("thumb", "cover_big");
-    } else {
-      insertCover = propsCover;
-    }
+import { displayImage } from '../Utils/VariableAssignment';
 
-    return (
-      <Row>
-        <Col></Col>
-        <Col lg={3}>
-        <img src={insertCover} alt="..." />
+const GameInfo = (props) => {
+  return (
+    <>
+      <Row className="s-row-positioning" noGutters>
+        <Col className="text-center" lg={4}>
+          <img className="border border-dark rounded " src={displayImage(props.cover, "cover_big")} alt="..." />
         </Col>
         <Col lg={7}>
-          <h1>{this.props.name}</h1>
-          <p>{this.props.summary}</p>
+          <h1>{props.name}</h1>
+          <p>{props.summary}</p>
         </Col>
         <Col></Col>
       </Row>
-    );
-  }
+    </>
+  );
 }
 
 GameInfo.propTypes = {
   cover: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool
-  ]).isRequired,
+  ]),
   name: PropTypes.string.isRequired,
   summary: PropTypes.string.isRequired
 }

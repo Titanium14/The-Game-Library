@@ -11,3 +11,16 @@
 .s-spacing-bottom {
   margin-bottom: 25px;
 }
+
+.s-overlay {
+  padding: 0;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.s-row-positioning {
+  margin-top: -9rem;
+}

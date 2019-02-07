@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { TabContent, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
-import SingleTable from './SingleTable';
-import Ratings from './Ratings';
-import Media from './Media';
+import SubNavLink from './SubNavLink';
+import SubTabs from './SubTabs';
 
 class SubNav extends Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      activeTab: '1'
-    };
+    this.state = { activeTab: '1' };
   }
 
   toggle(tab) {
@@ -24,76 +19,18 @@ class SubNav extends Component {
       });
     }
   }
+
   render() {
     return (
       <>
         <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
-            >
-              Game Details
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
-            >
-              Ratings
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => { this.toggle('3'); }}
-            >
-              Screenshots
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '4' })}
-              onClick={() => { this.toggle('4'); }}
-            >
-              Videos
-            </NavLink>
-          </NavItem>
+          <SubNavLink
+            tab={this.state.activeTab}
+            toggle={this.toggle.bind(this)} />
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
-            <Row noGutters>
-              <SingleTable
-                game={this.props.game} />
-            </Row>
-          </TabPane>
-          <TabPane tabId="2">
-            <Row noGutters>
-              <Col lg="12">
-                <Ratings
-                  game={this.props.game} />
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="3">
-            <Row noGutters>
-              <Col lg="12">
-              <Media
-                name="Screenshots"
-                mediaType={this.props.game.screenshots} />
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="4">
-            <Row noGutters>
-              <Col lg="12">
-                <Media
-                  name="Videos"
-                  mediaType={this.props.game.videos} />
-              </Col>
-            </Row>
-          </TabPane>
+          <SubTabs
+            game={this.props.game} />
         </TabContent>
       </>
     );

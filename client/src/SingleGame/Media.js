@@ -44,7 +44,7 @@ class Media extends Component {
 
 Media.propTypes = {
   name: PropTypes.string.isRequired,
-  mediaType: PropTypes.array.isRequired
+  mediaType: PropTypes.array
 }
 
 export default Media;

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-class FilterButtons extends Component {
+import { dropItems } from '../Utils/ObjectGenerator';
+
+class ButtonsFilter extends Component {
   constructor(props) {
     super(props);
 
@@ -16,28 +18,20 @@ class FilterButtons extends Component {
   }
 
   render() {
-    const dropList = this.props.objArray.map( dl =>
-      <DropdownItem
-          key={dl.id}
-          id={dl.id}
-          onClick={this.props.handleDropClick}>
-        {dl.name}
-      </DropdownItem>
-    );
     return (
       <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle name={this.props.name} onClick={this.props.handleBtnClick} caret color={this.props.color}>
           {this.props.name}
         </DropdownToggle>
         <DropdownMenu>
-          {dropList}
+          {dropItems(this.props.objArray, this.props.handleDropClick)}
         </DropdownMenu>
       </ButtonDropdown>
     );
   }
 }
 
-FilterButtons.propTypes = {
+ButtonsFilter.propTypes = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   objArray: PropTypes.array.isRequired,
@@ -45,4 +39,4 @@ FilterButtons.propTypes = {
   handleDropClick: PropTypes.func.isRequired
 }
 
-export default FilterButtons;
+export default ButtonsFilter;

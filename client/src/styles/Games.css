@@ -27,12 +27,16 @@
   padding-top: 10px;
 }
 
-.btn-link {
-  color: #000;
+.s-remove-event span {
+  pointer-events: none;
 }
 
 @media only screen and (min-width: 992px) {
   .s-pagination {
     float: right;
   }
+}
+
+.btn-link {
+  color: #000;
 }

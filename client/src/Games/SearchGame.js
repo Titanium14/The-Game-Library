@@ -3,7 +3,7 @@ import { Row, Col, Card, CardHeader, ListGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import SearchList from './SearchList';
+import { searchResults } from '../Utils/ObjectGenerator';
 
 class SearchGame extends Component {
   constructor(props) {
@@ -30,20 +30,14 @@ class SearchGame extends Component {
   }
 
   render() {
-    const listDetails = this.state.searched.map( c =>
-      <SearchList
-          key={c.id}
-          id={c.id}
-          name={c.name} />
-    );
     return (
-      <Row>
+      <Row noGutters>
         <Col></Col>
         <Col lg={4}>
-          <Card>
+          <Card className="m-spacing">
             <CardHeader tag="h4">You searched for {decodeURI(this.state.searchValue.toUpperCase())}...</CardHeader>
             <ListGroup>
-              {listDetails}
+              {searchResults(this.state.searched)}
             </ListGroup>
           </Card>
         </Col>

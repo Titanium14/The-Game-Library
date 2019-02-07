@@ -2,7 +2,7 @@ import React from 'react';
 import { PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const IndividualPage = (props) => {
+const PageIndividual = (props) => {
   return (
     <PaginationItem>
       <PaginationLink name={props.pages} onClick={props.handlePageClick}>
@@ -12,9 +12,9 @@ const IndividualPage = (props) => {
   );
 }
 
-IndividualPage.propTypes = {
+PageIndividual.propTypes = {
   handlePageClick: PropTypes.func.isRequired,
   pages: PropTypes.number.isRequired
 }
 
-export default IndividualPage;
+export default PageIndividual;
