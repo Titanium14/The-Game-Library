@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, ListGroup } from 'reactstrap';
+import { ListGroup } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import { ratingCates, ratingDisplay } from '../Utils/ObjectGenerator';
@@ -9,11 +9,9 @@ const textArray = ["Rating based on external critic scores", "Average IGDB user 
 
 const Ratings = (props) => {
   return (
-    <Col lg={12}>
-      <ListGroup>
-        {ratingDisplay(ratingCates(props.game, ratingsArray, textArray))}
-      </ListGroup>
-    </Col>
+    <ListGroup>
+      {ratingDisplay(ratingCates(props.game, ratingsArray, textArray))}
+    </ListGroup>
   );
 };
 

@@ -15,8 +15,17 @@
   background-size: cover;
   background-position: center;
   position: relative;
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -o-filter: blur(3px);
+  -ms-filter: blur(3px);
+  filter: blur(3px);
 }
 
 .s-row-positioning {
-  margin-top: -9rem;
+  margin-top: -15rem;
+}
+
+.s-spacing-all {
+  margin: 3rem 1rem 0 3rem;
 }

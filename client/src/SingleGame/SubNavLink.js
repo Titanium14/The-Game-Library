@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { objCustomOptions, tabItems } from '../Utils/ObjectGenerator';
 
-const tabNames = ["Game Details", "Ratings", "Screenshots", "Videos"];
+const tabNames = ["Summary", "Game Details", "Ratings", "Screenshots", "Videos"];
 
 const SubNavLink = (props) => {
   return (

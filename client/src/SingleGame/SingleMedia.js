@@ -9,9 +9,9 @@ const SingleMedia = (props) => {
     <>
       {props.imgId ? (
         <Col lg={6}>
-          <img className="s-media" src={displayImage(props.imgId, "screenshot_med", 569, 320, 24)} alt="..." />
+          <img className="s-media" width="100%" src={displayImage(props.imgId, "screenshot_med", 569, 320, 24)} alt="..." />
         </Col>
-      ) : (
+      ) : props.vidId ? (
         <Col lg={6}>
           <Card className="s-media">
             <CardHeader tag="h2">{props.vidName}</CardHeader>
@@ -22,6 +22,9 @@ const SingleMedia = (props) => {
             </CardBody>
           </Card>
         </Col>
+      ) : (
+        <>
+        </>
       )}
     </>
   );

@@ -46,17 +46,11 @@ class SingleGame extends Component {
   }
 
   render() {
-    let name, gameCover, summary, screenshot, divStyle;
+    let name, gameCover, url, screenshot, divStyle;
     if (this.state.resFlag && this.state.game !== []) {
       name = this.state.game.name;
+      url = this.state.game.url;
       this.state.game.cover ? gameCover = this.state.game.cover.image_id : gameCover = null;
-      this.state.game.summary ?
-        summary = this.state.game.summary
-          :
-        this.state.game.storyline ?
-          summary = this.state.game.storyline
-            :
-          summary = "No summary available";
       this.state.game.screenshots ? screenshot = this.state.game.screenshots[0].image_id : screenshot = undefined;
 
       divStyle = {
@@ -77,7 +71,8 @@ class SingleGame extends Component {
                 <GameInfo
                   name={name}
                   cover={gameCover}
-                  summary={summary} />
+                  url={url}
+                  screenshot={screenshot} />
               </Col>
               <Col></Col>
             </Row>
