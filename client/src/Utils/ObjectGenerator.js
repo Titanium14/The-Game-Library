@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdownItem, NavItem, NavLink, TabPane, Row } from 'reactstrap';
+import { DropdownItem, NavItem, NavLink, TabPane, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 
 import GamesRow from '../Games/GamesRow';
@@ -115,7 +115,9 @@ export const tabPanes = (array) => {
               tabId={`${i}`}
               key={`${i}`}>
               <Row noGutters>
-                {array[i-1]}
+                <Col lg={12}>
+                  {array[i-1]}
+                </Col>
               </Row>
             </TabPane>
   });
@@ -176,7 +178,6 @@ export const rowDetails = (game, array) => {
   game.genres ? rowArray.push(game.genres) : rowArray.push("Not available");
   game.platforms ? rowArray.push(game.platforms) : rowArray.push("Not available");
   game.release_dates ? rowArray.push(game.release_dates[0].human) : rowArray.push("Not available");
-  game.url ? rowArray.push(game.url) : rowArray.push("Not available");
 
   const objFields = array.map( (f, i) => {
     let newObj = {};

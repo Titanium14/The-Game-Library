@@ -9,11 +9,11 @@ const GameInfo = (props) => {
     <>
       <Row className="s-row-positioning" noGutters>
         <Col className="text-center" lg={4}>
-          <img className="border border-dark rounded " src={displayImage(props.cover, "cover_big", 264, 374, 24)} alt="..." />
+          <img className="border border-dark rounded" src={displayImage(props.cover, "cover_big", 264, 374, 24)} alt="..." />
         </Col>
-        <Col lg={7}>
-          <h1>{props.name}</h1>
-          <p>{props.summary}</p>
+        <Col className="s-spacing-all" lg={7}>
+          <h1 className="text-white bg-dark">{props.name}</h1>
+          <p><a className="text-light bg-dark" href={props.url}>{props.url}</a></p>
         </Col>
         <Col></Col>
       </Row>
@@ -27,7 +27,7 @@ GameInfo.propTypes = {
     PropTypes.bool
   ]),
   name: PropTypes.string.isRequired,
-  summary: PropTypes.string.isRequired
+  url: PropTypes.string.isRequired
 }
 
 export default GameInfo;
